@@ -1,0 +1,13 @@
+{
+    "name": "socket.io-chat",
+    "version": "0.0.1",
+    "description": "A simple chat using socket.io",
+    "main": "index.js",
+    "author": "Tim Mangliers",
+    "private": true,
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.16.4",
+        "socket.io": "^2.2.0"
+    }
+}
