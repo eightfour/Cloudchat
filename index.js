@@ -33,6 +33,11 @@ io.on('connection', function(socket){
         console.table([userdata.username, userdata.password, userdata.color]);
         io.emit('add user', userdata);
       })
+    socket.on('names?', function(name){
+        console.log('test');
+        console.log(name.username + " /test");
+        io.local.emit('names!', name);
+      })
 
 });
 

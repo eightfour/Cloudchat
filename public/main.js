@@ -41,6 +41,20 @@ $(function () {
       $('#messages').append($('<li>').text(usernameV.username + ' disconnected'));
       scroll();
     });
+
+    socket.on('names!', function(usernameVV){
+      var l = document.querySelectorAll("#users li").length;
+      console.log(usernameVV.username);
+      //if(l == 0) {
+        console.log('yes');
+        addUserNameToDiv(usernameVV.username);
+        scroll();
+     // }else {
+        console.log('nope');
+      //}
+    });
+   
+
   });
 
   /* scrolls to actual message */
@@ -91,6 +105,7 @@ $(function () {
       fadeOutLoginPage(elementId);
       colorUsername();
       socket.emit('user con', { username: username, password: password, color: color });
+      socket.emit('names?', {username: username});
     }else {
       console.log('login failed: see login function');
     }
