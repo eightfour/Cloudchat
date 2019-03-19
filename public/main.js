@@ -20,7 +20,6 @@ $(function () {
 
     socket.on('chat message2', function(data){
      var timeStamp = actualDate();
-     console.table([data]);
       $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
       $('.userName').css('color', color);
       $('#messages').append($('<li>').text(data.message));
@@ -29,32 +28,26 @@ $(function () {
 
     /* print connect-message */
 
-    socket.on('add user', function(usernameV){
-      addUserNameToDiv(usernameV.username);
-      $('#messages').append($('<li>').text(usernameV.username + ' connected'));
+    socket.on('add user', function(data){
+      clearUserList();
+      for(var i = 0; i < data.usernames.length; i++){
+        addUserNameToDiv(data.usernames[i]);
+      }
+      $('#messages').append($('<li>').text(data.username + ' connected'));
       scroll();
     });
 
     /* print disconnect-message */
 
-    socket.on('user dcon', function(usernameV){
-      $('#messages').append($('<li>').text(usernameV.username + ' disconnected'));
+    socket.on('user dcon', function(data){
+      $('#messages').append($('<li>').text(data.username + ' disconnected'));
       scroll();
-    });
+      clearUserList();
+      for(var i = 0; i < data.usernames.length; i++){
+        addUserNameToDiv(data.usernames[i]);
+      }
 
-    socket.on('names!', function(usernameVV){
-      var l = document.querySelectorAll("#users li").length;
-      console.log(usernameVV.username);
-      //if(l == 0) {
-        console.log('yes');
-        addUserNameToDiv(usernameVV.username);
-        scroll();
-     // }else {
-        console.log('nope');
-      //}
     });
-   
-
   });
 
   /* scrolls to actual message */
@@ -105,17 +98,20 @@ $(function () {
       fadeOutLoginPage(elementId);
       colorUsername();
       socket.emit('user con', { username: username, password: password, color: color });
-      socket.emit('names?', {username: username});
     }else {
       console.log('login failed: see login function');
     }
 }
 
 
-// TODO add to list
+
 function addUserNameToDiv(usernameV){
   $('#users').append($('<li class="userList"><span class="userName">' + usernameV + '</span></li>'));
   $('.userName').css('color', color);
+}
+
+function clearUserList(){
+  $('#users').empty();
 }
 
   /* handle fade out of loginpage */

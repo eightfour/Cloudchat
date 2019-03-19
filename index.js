@@ -19,27 +19,33 @@ app.get('/', function(req, res){
 /* handle chatroom */
 
 io.on('connection', function(socket){
-    socket.on('disconnect', function(data){
-        io.emit('user dcon', data);
+
+    socket.on('disconnect', function(){
+        console.table(usernames);
+        var index = usernames.indexOf(socket.username);
+        if(index !== -1) { usernames.splice(index, 1)}
+        io.emit('user dcon', {username: socket.username, usernames: usernames });
+        console.table(usernames);
     });
     socket.on('chat message', function(data){
-        console.log(socket.username + ': ' + data);
         io.emit('chat message2', {message: data, username: socket.username, color: socket.color});
     });
     socket.on('user con', function (userdata){
         socket.username = userdata.username;
-        socket.password = userdata.password;
         socket.color = userdata.color;
-        console.table([userdata.username, userdata.password, userdata.color]);
-        io.emit('add user', userdata);
-      })
-    socket.on('names?', function(name){
-        console.log('test');
-        console.log(name.username + " /test");
-        io.local.emit('names!', name);
+        usernames.push(userdata.username);
+        passwords.push(userdata.password);
+        colors.push(userdata.color);
+        io.emit('add user', {usernames: usernames, username: userdata.username} );
       })
 
 });
+
+    /* Data */
+
+    var usernames = [];
+    var passwords = [];
+    var colors = [];
 
 /* http server listens to port 3000 */
 
