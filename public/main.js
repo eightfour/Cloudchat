@@ -128,3 +128,13 @@ function fadeOutLoginPage(elementId){
     e.preventDefault();
     return false;
  });
+
+ $("a").click(function() {
+  // creating input on-the-fly
+  var input = $(document.createElement("input"));
+  input.attr("type", "file");
+  console.log(input);
+  // add onchange handler if you wish to get the file :)
+  input.trigger("click"); // opening dialog
+  return false; // avoiding navigation
+});
