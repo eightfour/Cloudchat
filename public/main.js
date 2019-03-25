@@ -94,7 +94,7 @@ $(function () {
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
   
-    if(username) { //TODO check PW null
+    if(username && password) { //TODO check PW null
       fadeOutLoginPage(elementId);
       colorUsername();
       socket.emit('user con', { username: username, password: password, color: color });
