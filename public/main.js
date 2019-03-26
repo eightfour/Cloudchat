@@ -21,10 +21,34 @@ $(function () {
     socket.on('chat message2', function(data){
      var timeStamp = actualDate();
       $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
-      $('.userName').css('color', color);
+      $('.userName').css('color', data.color);
       $('#messages').append($('<li>').text(data.message));
       scroll();
     });
+
+    socket.on('chat message3', function(data){
+      var timeStamp = actualDate();
+       $('#messages').append($('<li><span class="userName">Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+       $('.userName').css('color', data.color);
+       $('#messages').append($('<li>').text(data.message));
+       scroll();
+     });
+
+     socket.on('chat message4', function(data){
+      var timeStamp = actualDate();
+       $('#messages').append($('<li><span class="userName">Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+       $('.userName').css('color', data.color);
+       $('#messages').append($('<li>').text(data.message));
+       scroll();
+     });
+
+     socket.on('chat message5', function(data){
+      var timeStamp = actualDate();
+       $('#messages').append($('<li><span class="userName">Group with: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+       $('.userName').css('color', data.color);
+       $('#messages').append($('<li>').text(data.message));
+       scroll();
+     });
 
     /* print connect-message */
 
