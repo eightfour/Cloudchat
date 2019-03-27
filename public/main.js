@@ -56,12 +56,13 @@ $(function () {
       var img = document.createElement('img');
       img.height = 200;
       img.width = 200;
-      img.src = data.img;
+      img.src = data.img.img;
       //var location = document.getElementById('messages');
       var timeStamp = actualDate();
       $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
       $('.userName').css('color', data.color);
       $('#messages').append(img);
+      $('#messages').append($('<li>').text(data.img.msg));
       scroll();
 
      });
@@ -187,7 +188,8 @@ function fadeOutLoginPage(elementId){
      reader.onload = readerEvent => {
         var content = readerEvent.target.result; // this is the content!
         console.log(username);
-        socket.emit('chat message img',content);
+        socket.emit('chat message img',{msg: $('#typeforminput').val(), img: content});
+        $('#typeforminput').val('');
      }
     }
   }
