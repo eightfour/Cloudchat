@@ -46,7 +46,7 @@ $(function () {
         console.log("kein bild");
        $('#messages').append($('<li><span class="userName">Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
        $('.userName').css('color', data.color);
-       $('#messages').append($('<li>').text(data.message.msg));
+       $('#messages').append($('<li>').text(data.message));
       }
       else{
         console.log("bild");
@@ -71,7 +71,7 @@ $(function () {
         console.log("kein bild");
        $('#messages').append($('<li><span class="userName">Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
        $('.userName').css('color', data.color);
-       $('#messages').append($('<li>').text(data.message.msg));
+       $('#messages').append($('<li>').text(data.message));
       }
       else{
         console.log("bild");
@@ -88,11 +88,6 @@ $(function () {
       }
        scroll();
      });
-
-
-
-
-
 
      //group msg
      socket.on('chat message5', function(data){
