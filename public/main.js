@@ -42,7 +42,7 @@ $(function () {
      //private msg who resive ist
     socket.on('chat message3', function(data){
       var timeStamp = actualDate();
-      if(!data.img.hasOwnProperty('img')){
+      if(!data.media.hasOwnProperty('img')){
         console.log("kein bild");
        $('#messages').append($('<li><span class="userName">Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
        $('.userName').css('color', data.color);
@@ -54,7 +54,7 @@ $(function () {
         var img = document.createElement('img');
         img.height = 200;
         img.width = 200;
-        img.src = data.img.img;
+        img.src = data.media.img;
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName">Private from:' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
@@ -67,7 +67,7 @@ $(function () {
      //private msg who send is
      socket.on('chat message4', function(data){
       var timeStamp = actualDate();
-      if(!data.img.hasOwnProperty('img')){
+      if(!data.media.hasOwnProperty('img')){
         console.log("kein bild");
        $('#messages').append($('<li><span class="userName">Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
        $('.userName').css('color', data.color);
@@ -79,7 +79,7 @@ $(function () {
         var img = document.createElement('img');
         img.height = 200;
         img.width = 200;
-        img.src = data.img.img;
+        img.src = data.media.img;
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName">Private to:' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);

@@ -52,8 +52,8 @@ io.on('connection', function(socket){
                 }
             }
             if(id != ''){
-                io.to(id).emit('chat message3', {username: socket.username, message: messagepriv, color: coloru, img: data});
-                io.to(socket.id).emit('chat message4', {username: usernamepriv, message: messagepriv, color: coloru, img: data});
+                io.to(id).emit('chat message3', {username: socket.username, message: messagepriv, color: coloru, media: data});
+                io.to(socket.id).emit('chat message4', {username: usernamepriv, message: messagepriv, color: coloru, media: data});
             }else {
             }
 
