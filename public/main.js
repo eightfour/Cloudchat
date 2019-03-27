@@ -16,8 +16,7 @@ $(function () {
       return false;
     });
 
-    /* print message */
-
+    /* global message */
     socket.on('chat message2', function(data){
      var timeStamp = actualDate();
       $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
@@ -26,6 +25,7 @@ $(function () {
       scroll();
     });
 
+     //private msg who resive ist
     socket.on('chat message3', function(data){
       var timeStamp = actualDate();
        $('#messages').append($('<li><span class="userName">Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
@@ -34,6 +34,7 @@ $(function () {
        scroll();
      });
 
+     //private msg who send is
      socket.on('chat message4', function(data){
       var timeStamp = actualDate();
        $('#messages').append($('<li><span class="userName">Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
@@ -42,6 +43,7 @@ $(function () {
        scroll();
      });
 
+     //group msg
      socket.on('chat message5', function(data){
       var timeStamp = actualDate();
        $('#messages').append($('<li><span class="userName">Group with: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
@@ -51,6 +53,7 @@ $(function () {
      });
 
 
+     //send img global with a message
      socket.on('chat message img 2', function(data){
       console.log(data);
       var img = document.createElement('img');
