@@ -27,6 +27,11 @@ io.on('connection', function(socket){
         io.emit('user dcon', {username: socket.username, usernames: usernames });
         console.table(usernames);
     });
+    socket.on('chat message img', function(data){
+        io.emit('chat message img 2', {username: socket.username, img: data});
+
+    });
+
     socket.on('chat message', function(data){
         /* private message */
         if((data.charAt(0) ==  '\\') && (data.charAt(1) == 'p') && (data.charAt(2) == ' ')){

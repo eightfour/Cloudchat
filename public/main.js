@@ -50,6 +50,24 @@ $(function () {
        scroll();
      });
 
+
+     socket.on('chat message img 2', function(data){
+      console.log(data);
+      var img = document.createElement('img');
+      img.height = 200;
+      img.width = 200;
+      img.src = data.img;
+      //var location = document.getElementById('messages');
+      var timeStamp = actualDate();
+      $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+      $('.userName').css('color', data.color);
+      $('#messages').append(img);
+      scroll();
+
+     });
+
+     
+
     /* print connect-message */
 
     socket.on('add user', function(data){
@@ -154,11 +172,25 @@ function fadeOutLoginPage(elementId){
  });
 
  $("a").click(function() {
-  // creating input on-the-fly
-  var input = $(document.createElement("input"));
-  input.attr("type", "file");
-  console.log(input);
-  // add onchange handler if you wish to get the file :)
-  input.trigger("click"); // opening dialog
-  return false; // avoiding navigation
+  var input = document.createElement('input');
+  input.type = 'file';
+  
+  input.onchange = e => { 
+  
+     // getting a hold of the file reference
+     var file = e.target.files[0]; 
+     // setting up the reader
+     if (file.type == 'image/jpeg'){
+     var reader = new FileReader();
+     reader.readAsDataURL(file);
+     // here we tell the reader what to do when it's done reading...
+     reader.onload = readerEvent => {
+        var content = readerEvent.target.result; // this is the content!
+        console.log(username);
+        socket.emit('chat message img',content);
+     }
+    }
+  }
+  
+  input.click();
 });
