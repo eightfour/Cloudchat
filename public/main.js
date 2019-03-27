@@ -11,37 +11,88 @@ $(function () {
     
     $('#typeform').submit(function(e){
       e.preventDefault(); // prevents page reloading
-      socket.emit('chat message', $('#typeforminput').val());
+      socket.emit('chat message', {msg: $('#typeforminput').val()});
       $('#typeforminput').val('');
       return false;
     });
 
     /* global message */
     socket.on('chat message2', function(data){
-     var timeStamp = actualDate();
+      var timeStamp = actualDate();
+      if(!data.message.hasOwnProperty('img')){
       $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
       $('.userName').css('color', data.color);
-      $('#messages').append($('<li>').text(data.message));
+      $('#messages').append($('<li>').text(data.message.msg));
+      }
+      else{
+        console.log(data);
+        var img = document.createElement('img');
+        img.height = 200;
+        img.width = 200;
+        img.src = data.message.img;
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(img);
+        $('#messages').append($('<li>').text(data.message.msg));
+      }
       scroll();
     });
 
      //private msg who resive ist
     socket.on('chat message3', function(data){
       var timeStamp = actualDate();
+      if(!data.img.hasOwnProperty('img')){
+        console.log("kein bild");
        $('#messages').append($('<li><span class="userName">Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
        $('.userName').css('color', data.color);
-       $('#messages').append($('<li>').text(data.message));
+       $('#messages').append($('<li>').text(data.message.msg));
+      }
+      else{
+        console.log("bild");
+        console.log(data);
+        var img = document.createElement('img');
+        img.height = 200;
+        img.width = 200;
+        img.src = data.img.img;
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName">Private from:' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(img);
+        $('#messages').append($('<li>').text(data.message));
+      }
        scroll();
      });
 
      //private msg who send is
      socket.on('chat message4', function(data){
       var timeStamp = actualDate();
+      if(!data.img.hasOwnProperty('img')){
+        console.log("kein bild");
        $('#messages').append($('<li><span class="userName">Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
        $('.userName').css('color', data.color);
-       $('#messages').append($('<li>').text(data.message));
+       $('#messages').append($('<li>').text(data.message.msg));
+      }
+      else{
+        console.log("bild");
+        console.log(data);
+        var img = document.createElement('img');
+        img.height = 200;
+        img.width = 200;
+        img.src = data.img.img;
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName">Private to:' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(img);
+        $('#messages').append($('<li>').text(data.message));
+      }
        scroll();
      });
+
+
+
+
+
 
      //group msg
      socket.on('chat message5', function(data){
@@ -54,7 +105,7 @@ $(function () {
 
 
      //send img global with a message
-     socket.on('chat message img 2', function(data){
+/*      socket.on('chat message img 2', function(data){
       console.log(data);
       var img = document.createElement('img');
       img.height = 200;
@@ -66,9 +117,8 @@ $(function () {
       $('.userName').css('color', data.color);
       $('#messages').append(img);
       $('#messages').append($('<li>').text(data.img.msg));
-      scroll();
-
-     });
+      scroll(); 
+     });*/
 
      
 
@@ -191,7 +241,7 @@ function fadeOutLoginPage(elementId){
      reader.onload = readerEvent => {
         var content = readerEvent.target.result; // this is the content!
         console.log(username);
-        socket.emit('chat message img',{msg: $('#typeforminput').val(), img: content});
+        socket.emit('chat message',{msg: $('#typeforminput').val(), img: content});
         $('#typeforminput').val('');
      }
     }

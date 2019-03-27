@@ -28,15 +28,15 @@ io.on('connection', function(socket){
         console.table(usernames);
     });
     socket.on('chat message img', function(data){
-        io.emit('chat message img 2', {username: socket.username, img: data});
+        io.emit('chat message2', {username: socket.username, img: data});
 
     });
 
     socket.on('chat message', function(data){
         /* private message */
-        if((data.charAt(0) ==  '\\') && (data.charAt(1) == 'p') && (data.charAt(2) == ' ')){
+        if((data.msg.charAt(0) ==  '\\') && (data.msg.charAt(1) == 'p') && (data.msg.charAt(2) == ' ')){
             //TODO check empty message
-            var data1 = data.split(' ');
+            var data1 = data.msg.split(' ');
             var usernamepriv = data1[1];
             var messagepriv = '';
             var id = '';
@@ -52,13 +52,13 @@ io.on('connection', function(socket){
                 }
             }
             if(id != ''){
-                io.to(id).emit('chat message3', {username: socket.username, message: messagepriv, color: coloru});
-                io.to(socket.id).emit('chat message4', {username: usernamepriv, message: messagepriv, color: coloru});
+                io.to(id).emit('chat message3', {username: socket.username, message: messagepriv, color: coloru, img: data});
+                io.to(socket.id).emit('chat message4', {username: usernamepriv, message: messagepriv, color: coloru, img: data});
             }else {
             }
 
             /* group message */
-        }else if((data.charAt(0) ==  '\\') && (data.charAt(1) == 'g')){
+        }else if((data.msg.charAt(0) ==  '\\') && (data.msg.charAt(1) == 'g')){
             //TODO forbidd brackets in user names (and additional things...)
             // \g (hallo, bla bla)
             var data2 = data.split(' (');
