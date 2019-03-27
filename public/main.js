@@ -19,12 +19,17 @@ $(function () {
     /* global message */
     socket.on('chat message2', function(data){
       var timeStamp = actualDate();
-      if(!data.message.hasOwnProperty('img')){
-      $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
-      $('.userName').css('color', data.color);
-      $('#messages').append($('<li>').text(data.message.msg));
+      if(data.message.hasOwnProperty('mp3')){
+        var audio = document.createElement('audio');
+        audio.src = data.message.mp3;
+        console.log(audio);
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(audio);
+        $('#messages').append($('<li>').text(data.message.msg));
       }
-      else{
+      else if(data.message.hasOwnProperty('img')){
         console.log(data);
         var img = document.createElement('img');
         img.height = 200;
@@ -34,6 +39,11 @@ $(function () {
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
+        $('#messages').append($('<li>').text(data.message.msg));
+      }
+      else{
+        $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
         $('#messages').append($('<li>').text(data.message.msg));
       }
       scroll();
@@ -228,6 +238,7 @@ function fadeOutLoginPage(elementId){
   
      // getting a hold of the file reference
      var file = e.target.files[0]; 
+     console.log(file.type);
      // setting up the reader
      if (file.type == 'image/jpeg'){
      var reader = new FileReader();
@@ -239,6 +250,17 @@ function fadeOutLoginPage(elementId){
         socket.emit('chat message',{msg: $('#typeforminput').val(), img: content});
         $('#typeforminput').val('');
      }
+    }
+    else if(file.type == 'audio/mp3'){
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      // here we tell the reader what to do when it's done reading...
+      reader.onload = readerEvent => {
+         var content = readerEvent.target.result; // this is the content!
+         console.log(username);
+         socket.emit('chat message',{msg: $('#typeforminput').val(), mp3: content});
+         $('#typeforminput').val('');
+      }
     }
   }
   
