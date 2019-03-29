@@ -20,13 +20,26 @@ $(function () {
     socket.on('chat message2', function(data){
       var timeStamp = actualDate();
       if(data.message.hasOwnProperty('mp3')){
+        
         var audio = document.createElement('audio');
         audio.src = data.message.mp3;
         console.log(audio);
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
-        $('#messages').append(audio);
+        $('#messages').appendChild(audio);
+        $('#messages').append($('<li>').text(data.message.msg));
+      }
+      else if(data.message.hasOwnProperty('mp4')){
+        console.log(data);
+        var mp4 = document.createElement('video');
+        mp4.height = 200;
+        mp4.width = 200;
+        mp4.src = data.message.mp4;
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(mp4);
         $('#messages').append($('<li>').text(data.message.msg));
       }
       else if(data.message.hasOwnProperty('img')){
@@ -252,7 +265,6 @@ function fadeOutLoginPage(elementId){
      }
     }
     else if(file.type == 'audio/mp3'){
-      var reader = new FileReader();
       reader.readAsDataURL(file);
       // here we tell the reader what to do when it's done reading...
       reader.onload = readerEvent => {
@@ -261,6 +273,15 @@ function fadeOutLoginPage(elementId){
          socket.emit('chat message',{msg: $('#typeforminput').val(), mp3: content});
          $('#typeforminput').val('');
       }
+    }
+    else if(file.type == 'video/mp4'){
+      reader.readAsDataURL(file);
+      // here we tell the reader what to do when it's done reading...
+      reader.onload = readerEvent => {
+         var content = readerEvent.target.result; // this is the content!
+         console.log(username);
+         socket.emit('chat message',{msg: $('#typeforminput').val(), mp4: content});
+         $('#typeforminput').val('');
     }
   }
   
