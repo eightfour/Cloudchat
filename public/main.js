@@ -283,7 +283,7 @@ function fadeOutLoginPage(elementId){
          socket.emit('chat message',{msg: $('#typeforminput').val(), mp4: content});
          $('#typeforminput').val('');
     }
-  }
-  
-  input.click();
+  };
+}  
+input.click();
 });
