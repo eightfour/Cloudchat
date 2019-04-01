@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "description": "A simple chat using socket.io",
     "main": "index.js",
-    "author": "Tim Mangliers",
+    "author": "Marvin Holm, Tim Mangliers",
     "private": true,
     "license": "MIT",
     "dependencies": {
