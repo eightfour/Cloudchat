@@ -20,6 +20,21 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 
+    socket.on('username', function(name){
+        var free = true;
+        for(var i =0; i<usernames.length;i++){
+            if(usernames[i] == name.username){
+                free = false;
+            }
+        }
+        if(free){
+            socket.emit('username!', {datas: name, free: true});
+        }
+        else{
+            socket.emit('username!', {datas: name, free: false});
+        }
+    })
+
     socket.on('disconnect', function(){
         console.table(usernames);
         var index = usernames.indexOf(socket.username);

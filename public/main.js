@@ -2,6 +2,7 @@ var usernameInput = $('#loginname');
 var passwordInput = $('#loginpw');
 var color;
 var socket = io();
+var user = false;
 
 /* wrap functionality */
 
@@ -11,11 +12,20 @@ $(function () {
     
     $('#typeform').submit(function(e){
       e.preventDefault(); // prevents page reloading
-      socket.emit('chat message', {msg: $('#typeforminput').val()});
-      $('#typeforminput').val('');
+      if($('#typeforminput').val()){
+        socket.emit('chat message', {msg: $('#typeforminput').val()});
+        $('#typeforminput').val('');
+      }
       return false;
     });
 
+    socket.on('username!', function(data){
+      console.log("free: " + data.free);
+      if(data.free== true){
+        user = true;
+        login2(data);
+      }
+    })
     /* global message */
     socket.on('chat message2', function(data){
       var timeStamp = actualDate();
@@ -257,16 +267,19 @@ $(function () {
   function login(elementId){
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
-  
-    if(username && password && !username.includes('\\')&& !username.includes('(')&& !username.includes(')')) { //TODO check PW null
-      fadeOutLoginPage(elementId);
-      colorUsername();
-      socket.emit('user con', { username: username, password: password, color: color });
-    }else {
-      console.log('login failed: see login function');
-    }
+    socket.emit('username', {username: username, password: password, color: color, loginpage : elementId});
 }
 
+function login2(datas){
+  console.log(datas);
+  if(user && datas.datas.username && datas.datas.password && !datas.datas.username.includes('\\')&& !datas.datas.username.includes('(')&& !datas.datas.username.includes(')') && !datas.datas.username.includes(' ')) { //TODO check PW null
+    fadeOutLoginPage(datas.datas.loginpage);
+    colorUsername();
+    socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color });
+  }else {
+    console.log('login failed: see login function');
+  }
+}
 
 
 function addUserNameToDiv(usernameV){
