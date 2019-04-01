@@ -113,7 +113,7 @@ io.on('connection', function(socket){
             }
             /* message */
         }else {
-            io.emit('chat message2', {message: data, username: socket.username, color: socket.color});
+            io.emit('chat message2', {media: data, username: socket.username, color: socket.color});
         }
         
         

@@ -19,45 +19,47 @@ $(function () {
     /* global message */
     socket.on('chat message2', function(data){
       var timeStamp = actualDate();
-      if(data.message.hasOwnProperty('mp3')){
+      if(data.media.hasOwnProperty('mp3')){
         
         var audio = document.createElement('audio');
-        audio.src = data.message.mp3;
+        audio.controls = true;
+        audio.src = data.media.mp3;
         console.log(audio);
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
-        $('#messages').appendChild(audio);
-        $('#messages').append($('<li>').text(data.message.msg));
+        $('#messages').append(audio);
+        $('#messages').append($('<li>').text(data.media.msg));
       }
-      else if(data.message.hasOwnProperty('mp4')){
+      else if(data.media.hasOwnProperty('mp4')){
         console.log(data);
         var mp4 = document.createElement('video');
-        mp4.height = 200;
-        mp4.width = 200;
-        mp4.src = data.message.mp4;
+        mp4.height = 400;
+        mp4.width = 800
+        mp4.controls = true;
+        mp4.src = data.media.mp4;
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(mp4);
-        $('#messages').append($('<li>').text(data.message.msg));
+        $('#messages').append($('<li>').text(data.media.msg));
       }
-      else if(data.message.hasOwnProperty('img')){
+      else if(data.media.hasOwnProperty('img')){
         console.log(data);
         var img = document.createElement('img');
         img.height = 200;
         img.width = 200;
-        img.src = data.message.img;
+        img.src = data.media.img;
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
-        $('#messages').append($('<li>').text(data.message.msg));
+        $('#messages').append($('<li>').text(data.media.msg));
       }
       else{
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
-        $('#messages').append($('<li>').text(data.message.msg));
+        $('#messages').append($('<li>').text(data.media.msg));
       }
       scroll();
     });
@@ -65,52 +67,100 @@ $(function () {
      //private msg who resive ist
     socket.on('chat message3', function(data){
       var timeStamp = actualDate();
-      if(!data.media.hasOwnProperty('img')){
-        console.log("kein bild");
-       $('#messages').append($('<li><span class="userName">Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
-       $('.userName').css('color', data.color);
-       $('#messages').append($('<li>').text(data.message));
+      if(data.media.hasOwnProperty('mp3')){
+        
+        var audio = document.createElement('audio');
+        audio.controls = true;
+        audio.src = data.media.mp3;
+        console.log(audio);
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName" > Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(audio);
+        $('#messages').append($('<li>').text(data.message));
       }
-      else{
-        console.log("bild");
+      else if(data.media.hasOwnProperty('mp4')){
+        console.log(data);
+        var mp4 = document.createElement('video');
+        mp4.height = 400;
+        mp4.width = 800
+        mp4.controls = true;
+        mp4.src = data.media.mp4;
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(mp4);
+        $('#messages').append($('<li>').text(data.message));
+      }
+      else if(data.media.hasOwnProperty('img')){
         console.log(data);
         var img = document.createElement('img');
         img.height = 200;
         img.width = 200;
         img.src = data.media.img;
         //var location = document.getElementById('messages');
-        $('#messages').append($('<li><span class="userName">Private from:' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
         $('#messages').append($('<li>').text(data.message));
       }
-       scroll();
+      else{
+        $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append($('<li>').text(data.message));
+      }
+      scroll();
      });
 
-     //private msg who send is
+
+
      socket.on('chat message4', function(data){
       var timeStamp = actualDate();
-      if(!data.media.hasOwnProperty('img')){
-        console.log("kein bild");
-       $('#messages').append($('<li><span class="userName">Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
-       $('.userName').css('color', data.color);
-       $('#messages').append($('<li>').text(data.message));
+      if(data.media.hasOwnProperty('mp3')){
+        
+        var audio = document.createElement('audio');
+        audio.controls = true;
+        audio.src = data.media.mp3;
+        console.log(audio);
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(audio);
+        $('#messages').append($('<li>').text(data.message));
       }
-      else{
-        console.log("bild");
+      else if(data.media.hasOwnProperty('mp4')){
+        console.log(data);
+        var mp4 = document.createElement('video');
+        mp4.height = 400;
+        mp4.width = 800
+        mp4.controls = true;
+        mp4.src = data.media.mp4;
+        //var location = document.getElementById('messages');
+        $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append(mp4);
+        $('#messages').append($('<li>').text(data.message));
+      }
+      else if(data.media.hasOwnProperty('img')){
         console.log(data);
         var img = document.createElement('img');
         img.height = 200;
         img.width = 200;
         img.src = data.media.img;
         //var location = document.getElementById('messages');
-        $('#messages').append($('<li><span class="userName">Private to:' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
         $('#messages').append($('<li>').text(data.message));
       }
-       scroll();
+      else{
+        $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
+        $('.userName').css('color', data.color);
+        $('#messages').append($('<li>').text(data.message));
+      }
+      scroll();
      });
+
 
      //group msg
      socket.on('chat message5', function(data){
@@ -253,8 +303,8 @@ function fadeOutLoginPage(elementId){
      var file = e.target.files[0]; 
      console.log(file.type);
      // setting up the reader
-     if (file.type == 'image/jpeg'){
      var reader = new FileReader();
+     if (file.type == 'image/jpeg'){
      reader.readAsDataURL(file);
      // here we tell the reader what to do when it's done reading...
      reader.onload = readerEvent => {
