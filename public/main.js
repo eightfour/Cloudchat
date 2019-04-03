@@ -19,8 +19,8 @@ $(function () {
       return false;
     });
 
+    //handle if the username free or not, it is free than go to login2
     socket.on('username!', function(data){
-      console.log("free: " + data.free);
       if(data.free== true){
         user = true;
         login2(data);
@@ -34,7 +34,6 @@ $(function () {
         var audio = document.createElement('audio');
         audio.controls = true;
         audio.src = data.media.mp3;
-        console.log(audio);
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
@@ -42,7 +41,6 @@ $(function () {
         $('#messages').append($('<li>').text(data.media.msg));
       }
       else if(data.media.hasOwnProperty('mp4')){
-        console.log(data);
         var mp4 = document.createElement('video');
         mp4.height = 400;
         mp4.width = 800
@@ -55,7 +53,6 @@ $(function () {
         $('#messages').append($('<li>').text(data.media.msg));
       }
       else if(data.media.hasOwnProperty('img')){
-        console.log(data);
         var img = document.createElement('img');
         img.height = 200;
         img.width = 200;
@@ -82,7 +79,6 @@ $(function () {
         var audio = document.createElement('audio');
         audio.controls = true;
         audio.src = data.media.mp3;
-        console.log(audio);
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName" > Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
@@ -90,7 +86,6 @@ $(function () {
         $('#messages').append($('<li>').text(data.message));
       }
       else if(data.media.hasOwnProperty('mp4')){
-        console.log(data);
         var mp4 = document.createElement('video');
         mp4.height = 400;
         mp4.width = 800
@@ -103,7 +98,6 @@ $(function () {
         $('#messages').append($('<li>').text(data.message));
       }
       else if(data.media.hasOwnProperty('img')){
-        console.log(data);
         var img = document.createElement('img');
         img.height = 200;
         img.width = 200;
@@ -123,7 +117,7 @@ $(function () {
      });
 
 
-
+     //private messages who send it
      socket.on('chat message4', function(data){
       var timeStamp = actualDate();
       if(data.media.hasOwnProperty('mp3')){
@@ -131,7 +125,6 @@ $(function () {
         var audio = document.createElement('audio');
         audio.controls = true;
         audio.src = data.media.mp3;
-        console.log(audio);
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
@@ -139,7 +132,6 @@ $(function () {
         $('#messages').append($('<li>').text(data.message));
       }
       else if(data.media.hasOwnProperty('mp4')){
-        console.log(data);
         var mp4 = document.createElement('video');
         mp4.height = 400;
         mp4.width = 800
@@ -152,7 +144,6 @@ $(function () {
         $('#messages').append($('<li>').text(data.message));
       }
       else if(data.media.hasOwnProperty('img')){
-        console.log(data);
         var img = document.createElement('img');
         img.height = 200;
         img.width = 200;
@@ -180,23 +171,6 @@ $(function () {
        $('#messages').append($('<li>').text(data.message));
        scroll();
      });
-
-
-     //send img global with a message
-/*      socket.on('chat message img 2', function(data){
-      console.log(data);
-      var img = document.createElement('img');
-      img.height = 200;
-      img.width = 200;
-      img.src = data.img.img;
-      //var location = document.getElementById('messages');
-      var timeStamp = actualDate();
-      $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
-      $('.userName').css('color', data.color);
-      $('#messages').append(img);
-      $('#messages').append($('<li>').text(data.img.msg));
-      scroll(); 
-     });*/
 
      
 
@@ -262,7 +236,7 @@ $(function () {
     }
   }
 
-  /* handel login-process */
+  /* send the username to the server, the server ckeck now it the name free */
 
   function login(elementId){
     username = usernameInput.val().trim();
@@ -270,8 +244,8 @@ $(function () {
     socket.emit('username', {username: username, password: password, color: color, loginpage : elementId});
 }
 
+// handle the login
 function login2(datas){
-  console.log(datas);
   if(user && datas.datas.username && datas.datas.password && !datas.datas.username.includes('\\')&& !datas.datas.username.includes('(')&& !datas.datas.username.includes(')') && !datas.datas.username.includes(' ')) { //TODO check PW null
     fadeOutLoginPage(datas.datas.loginpage);
     colorUsername();
@@ -281,12 +255,13 @@ function login2(datas){
   }
 }
 
-
+//add a user to the username list
 function addUserNameToDiv(usernameV){
   $('#users').append($('<li class="userList"><span class="userName">' + usernameV + '</span></li>'));
   $('.userName').css('color', color);
 }
 
+//clear the username list
 function clearUserList(){
   $('#users').empty();
 }
@@ -306,6 +281,7 @@ function fadeOutLoginPage(elementId){
     return false;
  });
 
+ //open a file-chooser and send the selected media to the server
  $("a").click(function() {
   var input = document.createElement('input');
   input.type = 'file';
@@ -314,7 +290,6 @@ function fadeOutLoginPage(elementId){
   
      // getting a hold of the file reference
      var file = e.target.files[0]; 
-     console.log(file.type);
      // setting up the reader
      var reader = new FileReader();
      if (file.type == 'image/jpeg'){
@@ -322,7 +297,6 @@ function fadeOutLoginPage(elementId){
      // here we tell the reader what to do when it's done reading...
      reader.onload = readerEvent => {
         var content = readerEvent.target.result; // this is the content!
-        console.log(username);
         socket.emit('chat message',{msg: $('#typeforminput').val(), img: content});
         $('#typeforminput').val('');
      }
@@ -332,7 +306,6 @@ function fadeOutLoginPage(elementId){
       // here we tell the reader what to do when it's done reading...
       reader.onload = readerEvent => {
          var content = readerEvent.target.result; // this is the content!
-         console.log(username);
          socket.emit('chat message',{msg: $('#typeforminput').val(), mp3: content});
          $('#typeforminput').val('');
       }
@@ -342,7 +315,6 @@ function fadeOutLoginPage(elementId){
       // here we tell the reader what to do when it's done reading...
       reader.onload = readerEvent => {
          var content = readerEvent.target.result; // this is the content!
-         console.log(username);
          socket.emit('chat message',{msg: $('#typeforminput').val(), mp4: content});
          $('#typeforminput').val('');
     }

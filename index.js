@@ -20,6 +20,7 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 
+    //check if a username free
     socket.on('username', function(name){
         var free = true;
         for(var i =0; i<usernames.length;i++){
@@ -35,18 +36,16 @@ io.on('connection', function(socket){
         }
     })
 
+    //send messages if a user disconneted
     socket.on('disconnect', function(){
-        console.table(usernames);
         var index = usernames.indexOf(socket.username);
         if(index !== -1) { usernames.splice(index, 1)}
         io.emit('user dcon', {username: socket.username, usernames: usernames });
-        console.table(usernames);
-    });
-    socket.on('chat message img', function(data){
-        io.emit('chat message2', {username: socket.username, img: data});
-
     });
 
+    /*handle a messages from a client
+    global messages, private messages and group messages
+    can handle media files*/
     socket.on('chat message', function(data){
         /* private message */
         if((data.msg.charAt(0) ==  '\\') && (data.msg.charAt(1) == 'p') && (data.msg.charAt(2) == ' ')){
@@ -63,7 +62,6 @@ io.on('connection', function(socket){
                 if(datauser[i].username == usernamepriv){
                     id = datauser[i].socketid;
                     coloru = datauser[i].color;
-                    console.log(id + coloru);
                 }
             }
             if(id != ''){
@@ -76,7 +74,7 @@ io.on('connection', function(socket){
         }else if((data.msg.charAt(0) ==  '\\') && (data.msg.charAt(1) == 'g')){
             //TODO forbidd brackets in user names (and additional things...)
             // \g (hallo, bla bla)
-            var data2 = data.split(' (');
+            var data2 = data.msg.split(' (');
             var msg = '';
             for(var i = 1; i < data2.length; i++){
                 if(i != (data2.length - 1)){
@@ -86,7 +84,6 @@ io.on('connection', function(socket){
                 }
                 
             }
-            console.log(msg + "rksfjhrkjfzhrf");
             data2[1] = msg;
             var data3 = data2[1].split(') ');
             var groupnames = data3[0];
@@ -98,15 +95,11 @@ io.on('connection', function(socket){
                     groupmessage += data3[i];
                 }
                 
-            }
-            console.log(data + '\n');
-            console.log(groupnames + '\n');
-            console.log(groupmessage + '\n');
+            };
             var groupnames2 = [];
             var validgroupnames = [];
             var groupids = [];
             groupnames2 = groupnames.split(', ');
-            console.log(groupnames2);
             for(var i = 0; i < groupnames2.length; i++ ){
                 for(var j = 0; j < datauser.length; j++ ){
                     if(groupnames2[i] == datauser[j].username && groupnames2[i] !== socket.username){
@@ -133,9 +126,9 @@ io.on('connection', function(socket){
         
         
     });
+    //handle a connection from a new user
     socket.on('user con', function (userdata){
-        //TODO delete whitespaces from username
-        //TODO unique username
+
         usernames.push(userdata.username);
         passwords.push(userdata.password);
         colors.push(userdata.color);
