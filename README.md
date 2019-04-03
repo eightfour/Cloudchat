@@ -30,7 +30,6 @@ _/ ___\|  |  /  _ \|  |  \/ __ |/ ___\|  |  \\__  \\   __\
 
 * [Nodejs](https://nodejs.org/) - Run-time environment
 * [Socket.io](https://socket.io) - Communication library
-* [Bootstrap](https://getbootstrap.com/) - Front-end framework
 
 ## Authors
 
