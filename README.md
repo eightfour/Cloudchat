@@ -22,6 +22,10 @@ _/ ___\|  |  /  _ \|  |  \/ __ |/ ___\|  |  \\__  \\   __\
 
 * run **npm start**
 
+* Syntax:  
+       **-** private message: \p {user} text  
+       **-** group messages: \g (user1, user2, ..) text
+
 ## Built With
 
 * [Nodejs](https://nodejs.org/) - Run-time environment
