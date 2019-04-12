@@ -1,0 +1,4 @@
+applications:
+- name: mystifying-rosalind
+  memory: 512M
+  instances: 1
