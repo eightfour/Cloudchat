@@ -4,6 +4,33 @@ var color;
 var socket = io();
 var user = false;
 
+function getTone() {
+  fetch("https://wizardly-swartz.eu-de.mybluemix.net/tone", {
+      method: "POST",
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'mode': 'cors'
+      },
+      body: JSON.stringify({
+         texts: [$('#typeforminput').val()]
+      })
+  })
+  .then((response) => {
+      var contentType = response.headers.get("content-type");
+      if(contentType && contentType.includes("application/json")) {
+         return response.json();
+      }
+      throw new TypeError("Oops, we haven't got JSON!");
+  })
+  .then((response) => { 
+      console.log("response:" +  JSON.stringify(response));
+      if (response.mood) {
+        document.getElementById("mood").value = response.mood;
+      }
+  })
+}
+
 /* wrap functionality */
 
 $(function () {
@@ -13,6 +40,7 @@ $(function () {
     $('#typeform').submit(function(e){
       e.preventDefault(); // prevents page reloading
       if($('#typeforminput').val()){
+        console.log(getTone());
         socket.emit('chat message', {msg: $('#typeforminput').val()});
         $('#typeforminput').val('');
       }
