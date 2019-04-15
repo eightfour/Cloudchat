@@ -147,12 +147,12 @@ io.on('connection', function(socket){
                if(groupnames2.length == validgroupnames.length){
                 for(var i = 0; i < groupids.length; i++){
                     //TODO colors for everyone
-                    io.to(groupids[i]).emit('chat message5', {username: validgroupnames.toString() + "," + socket.username, message: groupmessage, color: textcolor});
+                    io.to(groupids[i]).emit('chat message5', {username: validgroupnames.toString() + "," + socket.username, message: groupmessage, color: coloru, textcolor: textcolor});
                 }
-                io.to(socket.id).emit('chat message5', {username: validgroupnames.toString() + "," + socket.username, message: groupmessage, color: io.color, textcolor: textcolor});        
+                io.to(socket.id).emit('chat message5', {username: validgroupnames.toString() + "," + socket.username, message: groupmessage, color: socket.color, textcolor: textcolor});        
                 }
                 else{
-                io.to(socket.id).emit('chat message2', {message: "groupmessage failed, dont use your own name and check all names", username: socket.username, color: io.color, textcolor: textcolor});
+                io.to(socket.id).emit('chat message2', {message: "groupmessage failed, dont use your own name and check all names", username: socket.username, color: socket.color, textcolor: textcolor});
                 }
                 /* message */
             }else {
