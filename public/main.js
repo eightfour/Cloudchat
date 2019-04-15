@@ -4,32 +4,7 @@ var color;
 var socket = io();
 var user = false;
 
-function getTone() {
-  fetch("https://wizardly-swartz.eu-de.mybluemix.net/tone", {
-      method: "POST",
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'mode': 'cors'
-      },
-      body: JSON.stringify({
-         texts: [$('#typeforminput').val()]
-      })
-  })
-  .then((response) => {
-      var contentType = response.headers.get("content-type");
-      if(contentType && contentType.includes("application/json")) {
-         return response.json();
-      }
-      throw new TypeError("Oops, we haven't got JSON!");
-  })
-  .then((response) => { 
-      console.log("response:" +  JSON.stringify(response));
-      if (response.mood) {
-        document.getElementById("mood").value = response.mood;
-      }
-  })
-}
+
 
 /* wrap functionality */
 
@@ -40,7 +15,6 @@ $(function () {
     $('#typeform').submit(function(e){
       e.preventDefault(); // prevents page reloading
       if($('#typeforminput').val()){
-        console.log(getTone());
         socket.emit('chat message', {msg: $('#typeforminput').val()});
         $('#typeforminput').val('');
       }
@@ -66,7 +40,8 @@ $(function () {
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(audio);
-        $('#messages').append($('<li>').text(data.media.msg));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.color));
+
       }
       else if(data.media.hasOwnProperty('mp4')){
         var mp4 = document.createElement('video');
@@ -94,7 +69,10 @@ $(function () {
       else{
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
-        $('#messages').append($('<li>').text(data.media.msg));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
+        //kann ich auf den gerade erstellen zugreifen und die farbe ändern? 
+        //$('#messages').css('color', data.color);
+
       }
       scroll();
     });
