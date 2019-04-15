@@ -40,7 +40,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(audio);
-        $('#messages').append($('<li>').text(data.media.msg).css('color', data.color));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
 
       }
       else if(data.media.hasOwnProperty('mp4')){
@@ -53,7 +53,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(mp4);
-        $('#messages').append($('<li>').text(data.media.msg));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('img')){
         var img = document.createElement('img');
@@ -64,14 +64,13 @@ $(function () {
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
-        $('#messages').append($('<li>').text(data.media.msg));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else{
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
-        //kann ich auf den gerade erstellen zugreifen und die farbe ändern? 
-        //$('#messages').css('color', data.color);
+
 
       }
       scroll();
@@ -89,7 +88,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName" > Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(audio);
-        $('#messages').append($('<li>').text(data.message));
+        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('mp4')){
         var mp4 = document.createElement('video');
@@ -101,7 +100,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(mp4);
-        $('#messages').append($('<li>').text(data.message));
+        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('img')){
         var img = document.createElement('img');
@@ -112,12 +111,12 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
-        $('#messages').append($('<li>').text(data.message));
+        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
       }
       else{
         $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
-        $('#messages').append($('<li>').text(data.message));
+        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
       }
       scroll();
      });
@@ -135,7 +134,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(audio);
-        $('#messages').append($('<li>').text(data.message));
+        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('mp4')){
         var mp4 = document.createElement('video');
@@ -147,7 +146,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(mp4);
-        $('#messages').append($('<li>').text(data.message));
+        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('img')){
         var img = document.createElement('img');
@@ -158,12 +157,12 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
-        $('#messages').append($('<li>').text(data.message));
+        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
       }
       else{
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
-        $('#messages').append($('<li>').text(data.message));
+        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
       }
       scroll();
      });
@@ -174,7 +173,7 @@ $(function () {
       var timeStamp = actualDate();
        $('#messages').append($('<li><span class="userName">Group with: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
        $('.userName').css('color', data.color);
-       $('#messages').append($('<li>').text(data.message));
+       $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
        scroll();
      });
 
