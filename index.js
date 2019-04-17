@@ -74,12 +74,12 @@ io.on('connection', function(socket){
             var textcolor;
             if(response.mood == 'happy'){
                 console.log("---happy");
-                textcolor = '#ff80a1';
+                textcolor = '#a1ff80';
             }
             else{
                 console.log("---unhappy");
 
-                textcolor = '#a1ff80';
+                textcolor = '#ff80a1';
             }
     
             /* private message */  
