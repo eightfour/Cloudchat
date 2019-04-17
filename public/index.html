@@ -13,15 +13,17 @@
 <body scroll="no" style="overflow: hidden">
   <div id="loginpagediv">
     <form id="loginform" action="">
-      <input id="loginname" type="text" maxLength="10" autocomplete="off" placeholder="Enter nickname" />
-      <input id="loginpw" type="password" maxLength="10" autocomplete="off" placeholder="Enter password" />
-      <div id="loginpiccont">
-        <div id="loginpic2"></div>
-        <button id="loginpic1">Upload profile picture</button>
-      </div>
+      <div id = "loginhandle">
+        <input id="loginname" type="text" maxLength="10" autocomplete="off" placeholder="Enter nickname" />
+        <input id="loginpw" type="password" maxLength="10" autocomplete="off" placeholder="Enter password" />
         <button id="loginreg" onclick="login('loginpagediv')">Login</button>
       </div>
-      
+      <div id="loginpiccont">
+          <div id="loginpic2">
+            <!--Placeholder für profilbild-->
+          </div>
+          <button id="loginpic1">Upload profile picture</button>
+      </div>
     </form>
   </div>
   <div id="content">
