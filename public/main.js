@@ -27,6 +27,11 @@ $(function () {
         user = true;
         login2(data);
       }
+      else{
+        alert("Username vergeben.");
+
+      }
+
     })
     /* global message */
     socket.on('chat message2', function(data){
@@ -256,6 +261,7 @@ function login2(datas){
     colorUsername();
     socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color });
   }else {
+    alert("Bitte gib ein PW ein");
     console.log('login failed: see login function');
   }
 }
