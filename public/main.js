@@ -198,12 +198,15 @@ $(function () {
     /* print disconnect-message */
 
     socket.on('user dcon', function(data){
+      if(data.username){
       $('#messages').append($('<li>').text(data.username + ' disconnected'));
       scroll();
       clearUserList();
       for(var i = 0; i < data.usernames.length; i++){
         addUserNameToDiv(data.usernames[i]);
       }
+    }
+    
 
     });
   });
@@ -251,7 +254,9 @@ $(function () {
   function login(elementId){
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
+    if(username != 'undefined'){
     socket.emit('username', {username: username, password: password, color: color, loginpage : elementId});
+    }
 }
 
 // handle the login
