@@ -3,6 +3,8 @@ var passwordInput = $('#loginpw');
 var color;
 var socket = io();
 var user = false;
+var privates = [];
+var myname;
 
 
 
@@ -14,10 +16,17 @@ $(function () {
     
     $('#typeform').submit(function(e){
       e.preventDefault(); // prevents page reloading
+    var t = document.getElementById('users').childNodes;
+    for(i=0; i<t.length; i++){
+      if(t[i].style.backgroundColor == 'gray'){
+        privates.push(t[i].textContent);
+      }
+    }
       if($('#typeforminput').val()){
-        socket.emit('chat message', {msg: $('#typeforminput').val()});
+        socket.emit('chat message', {msg: $('#typeforminput').val(), receiver: privates});
         $('#typeforminput').val('');
       }
+      privates = [];
       return false;
     });
 
@@ -171,17 +180,6 @@ $(function () {
       }
       scroll();
      });
-
-
-     //group msg
-     socket.on('chat message5', function(data){
-      var timeStamp = actualDate();
-       $('#messages').append($('<li><span class="userName">Group with: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
-       $('.userName').css('color', data.color);
-       $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
-       scroll();
-     });
-
      
 
     /* print connect-message */
@@ -264,17 +262,33 @@ function login2(datas){
   if(user && datas.datas.username && datas.datas.password && !datas.datas.username.includes('\\')&& !datas.datas.username.includes('(')&& !datas.datas.username.includes(')') && !datas.datas.username.includes(' ')) { //TODO check PW null
     fadeOutLoginPage(datas.datas.loginpage);
     colorUsername();
+    myname = datas.datas.username;
     socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color });
   }else {
-    alert("Bitte gib ein PW ein");
+    alert("Bitte gib ein PW ein und ein Username ein.");
     console.log('login failed: see login function');
   }
 }
 
 //add a user to the username list
 function addUserNameToDiv(usernameV){
-  $('#users').append($('<li class="userList"><span class="userName">' + usernameV + '</span></li>'));
+  $('#users').append($('<li class="userList"><span class="userName">' + usernameV + '</span></li>').click(function(){
+    if($(this).css("background-color") != 'rgb(128, 128, 128)' && $(this).text() != myname){
+    $(this).css("background-color", "gray");
+    }
+    else if($(this).text() != myname){
+      $(this).css("background-color", "rgba(0, 0, 0, 0)");
+    }
+  }));
   $('.userName').css('color', color);
+  var t = document.getElementById('users').childNodes;
+  for(i=0; i<t.length; i++){
+    if(t[i].textContent == myname){
+      t[i].style.backgroundColor = 'blue'
+      }
+  }
+
+
 }
 
 //clear the username list
@@ -299,6 +313,12 @@ function fadeOutLoginPage(elementId){
 
  //open a file-chooser and send the selected media to the server
  $("a").click(function() {
+  var t = document.getElementById('users').childNodes;
+  for(i=0; i<t.length; i++){
+    if(t[i].style.backgroundColor == 'gray'){
+      privates.push(t[i].textContent);
+    }
+  }
   var input = document.createElement('input');
   input.type = 'file';
   
@@ -313,7 +333,8 @@ function fadeOutLoginPage(elementId){
      // here we tell the reader what to do when it's done reading...
      reader.onload = readerEvent => {
         var content = readerEvent.target.result; // this is the content!
-        socket.emit('chat message',{msg: $('#typeforminput').val(), img: content});
+        socket.emit('chat message',{msg: $('#typeforminput').val(), img: content, receiver: privates});
+        privates = [];
         $('#typeforminput').val('');
      }
     }
@@ -322,7 +343,8 @@ function fadeOutLoginPage(elementId){
       // here we tell the reader what to do when it's done reading...
       reader.onload = readerEvent => {
          var content = readerEvent.target.result; // this is the content!
-         socket.emit('chat message',{msg: $('#typeforminput').val(), mp3: content});
+         socket.emit('chat message',{msg: $('#typeforminput').val(), mp3: content, receiver: privates});
+         privates = [];
          $('#typeforminput').val('');
       }
     }
@@ -331,7 +353,8 @@ function fadeOutLoginPage(elementId){
       // here we tell the reader what to do when it's done reading...
       reader.onload = readerEvent => {
          var content = readerEvent.target.result; // this is the content!
-         socket.emit('chat message',{msg: $('#typeforminput').val(), mp4: content});
+         socket.emit('chat message',{msg: $('#typeforminput').val(), mp4: content, receiver: privates});
+         privates = [];
          $('#typeforminput').val('');
     }
   };
