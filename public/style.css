@@ -85,6 +85,8 @@ body {
 #loginpiccont {
     float: right;
     width: 50%;
+    position: relative;
+    margin-top: -200px;
 }
 
 #loginpic1 {
