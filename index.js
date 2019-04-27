@@ -6,6 +6,59 @@ var http = require('http').Server(app);
 let port = process.env.PORT || 3000;
 const fetch = require('node-fetch');
 
+var db2id = {
+    "hostname": "dashdb-txn-sbox-yp-lon02-02.services.eu-gb.bluemix.net",
+    "password": "hrqg1zqq1vn+s3l1",
+    "https_url": "https://dashdb-txn-sbox-yp-lon02-02.services.eu-gb.bluemix.net:8443/",
+    "port": 50000,
+    "ssldsn": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-lon02-02.services.eu-gb.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=jkh27781;PWD=hrqg1zqq1vn+s3l1;Security=SSL;",
+    "host": "dashdb-txn-sbox-yp-lon02-02.services.eu-gb.bluemix.net",
+    "jdbcurl": "jdbc:db2://dashdb-txn-sbox-yp-lon02-02.services.eu-gb.bluemix.net:50000/BLUDB",
+    "uri": "db2://jkh27781:hrqg1zqq1vn%2Bs3l1@dashdb-txn-sbox-yp-lon02-02.services.eu-gb.bluemix.net:50000/BLUDB",
+    "db": "BLUDB",
+    "dsn": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-lon02-02.services.eu-gb.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=jkh27781;PWD=hrqg1zqq1vn+s3l1;",
+    "username": "jkh27781",
+    "ssljdbcurl": "jdbc:db2://dashdb-txn-sbox-yp-lon02-02.services.eu-gb.bluemix.net:50001/BLUDB:sslConnection=true;"
+  }
+
+var db2_https_url = db2id.https_url;
+var db2_username= db2id.username;
+var db2_password = db2id.password;
+
+var api = '/dbapi/v3';
+var host = db2_https_url + api;
+
+var userinfo = {
+    'userid': db2_username,
+    'password': db2_password
+}
+var service = '/auth/tokens';
+
+var request = require('request');
+
+console.log(host + service);
+
+var options = {
+  uri: host + service,
+  method: 'POST',
+  json: 'true',
+  userinfo: {
+    'userid': db2_username,
+    'password': db2_password
+    }
+};
+
+request(options, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body.id)
+  }else{
+      //console.log(error);
+      console.log('HERE BEGINNS THE RESPONSE \n');
+      console.log(response.statusCode);
+      console.log(body);
+  }
+});
+
 /* setup socket.io */
 
 var io = require('socket.io')(http);
