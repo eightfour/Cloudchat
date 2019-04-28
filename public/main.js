@@ -59,8 +59,8 @@ $(function () {
       }
       else if(data.media.hasOwnProperty('mp4')){
         var mp4 = document.createElement('video');
-        mp4.height = 400;
-        mp4.width = 800
+        mp4.height = 320;
+        mp4.width = 480;
         mp4.controls = true;
         mp4.src = data.media.mp4;
         //var location = document.getElementById('messages');
@@ -71,8 +71,8 @@ $(function () {
       }
       else if(data.media.hasOwnProperty('img')){
         var img = document.createElement('img');
-        img.height = 200;
-        img.width = 200;
+        img.height = 320;
+        img.width = 480;
         img.src = data.media.img;
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
@@ -106,8 +106,8 @@ $(function () {
       }
       else if(data.media.hasOwnProperty('mp4')){
         var mp4 = document.createElement('video');
-        mp4.height = 400;
-        mp4.width = 800
+        mp4.height = 320;
+        mp4.width = 480;
         mp4.controls = true;
         mp4.src = data.media.mp4;
         //var location = document.getElementById('messages');
@@ -118,8 +118,8 @@ $(function () {
       }
       else if(data.media.hasOwnProperty('img')){
         var img = document.createElement('img');
-        img.height = 200;
-        img.width = 200;
+        img.height = 320;
+        img.width = 480;
         img.src = data.media.img;
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
@@ -152,8 +152,8 @@ $(function () {
       }
       else if(data.media.hasOwnProperty('mp4')){
         var mp4 = document.createElement('video');
-        mp4.height = 400;
-        mp4.width = 800
+        mp4.height = 320;
+        mp4.width = 480
         mp4.controls = true;
         mp4.src = data.media.mp4;
         //var location = document.getElementById('messages');
@@ -164,8 +164,8 @@ $(function () {
       }
       else if(data.media.hasOwnProperty('img')){
         var img = document.createElement('img');
-        img.height = 200;
-        img.width = 200;
+        img.height = 320;
+        img.width = 480;
         img.src = data.media.img;
         //var location = document.getElementById('messages');
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
@@ -265,7 +265,7 @@ function login2(datas){
     myname = datas.datas.username;
     socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color });
   }else {
-    alert("Bitte gib ein PW ein und ein Username ein.");
+    alert("Bitte gib ein Passwort und einen Usernamen ein.");
     console.log('login failed: see login function');
   }
 }
