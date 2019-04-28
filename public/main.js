@@ -284,7 +284,7 @@ function addUserNameToDiv(usernameV){
   var t = document.getElementById('users').childNodes;
   for(i=0; i<t.length; i++){
     if(t[i].textContent == myname){
-      t[i].style.backgroundColor = 'blue'
+      t[i].style.backgroundColor = 'rgb(44, 44, 44)'
       }
   }
 
