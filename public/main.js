@@ -19,7 +19,7 @@ $(function () {
     var t = document.getElementById('users').childNodes;
     for(i=0; i<t.length; i++){
       if(t[i].style.backgroundColor == 'gray'){
-        privates.push(t[i].textContent);
+        privates.push(t[i].childNodes[1].textContent);
       }
     }
       if($('#typeforminput').val()){
@@ -280,19 +280,21 @@ function addUserNameToDiv(usernameV, profilePicture){
   div.append(profilePicture);
   div.appendChild(newContent);
   console.log("rip:" + div.childNodes[1].textContent);
-  $('#users').append($('<li class="userList">' + profilePicture + '</span> <span class="userName">' + usernameV + '</span></li>').click(function(){
-    if($(this).css("background-color") != 'rgb(128, 128, 128)' && $(this).text() != myname){
-      console.log("bla:" + $(this).children('span').eq(1));
+  $('#users').append($('<li class="userList"><span class="img">' + profilePicture + '</span>' + '<span class="userName">' + usernameV + '</span></li>').click(function(){
+    var innername = ($( this.innerHTML).text().replace(/\s/g, ""));
+    if($(this).css("background-color") != 'rgb(128, 128, 128)' && innername != myname){
+      
     $(this).css("background-color", "gray");
     }
-    else if($(this).text() != myname){
+    else if(innername != myname){
       $(this).css("background-color", "rgba(0, 0, 0, 0)");
     }
   }));
   $('.userName').css('color', color);
   var t = document.getElementById('users').childNodes;
   for(i=0; i<t.length; i++){
-    if(t[i].textContent == myname){
+   
+    if(t[i].childNodes[1].textContent == myname){
       t[i].style.backgroundColor = 'rgb(44, 44, 44)'
       }
   }
@@ -357,7 +359,7 @@ input.click();
   var t = document.getElementById('users').childNodes;
   for(i=0; i<t.length; i++){
     if(t[i].style.backgroundColor == 'gray'){
-      privates.push(t[i].textContent);
+      privates.push(t[i].childNodes[1].textContent);
     }
   }
   var input = document.createElement('input');
