@@ -273,14 +273,7 @@ function login2(datas){
 
 //add a user to the username list
 function addUserNameToDiv(usernameV, profilePicture){
-  var div = document.createElement('div');
-  var newContent = document.createTextNode(usernameV);
-  profilePicture.height = 40;
-  profilePicture.width = 40;
-  div.append(profilePicture);
-  div.appendChild(newContent);
-  console.log("rip:" + div.childNodes[1].textContent);
-  $('#users').append($('<li class="userList"><span class="img">' + profilePicture + '</span>' + '<span class="userName">' + usernameV + '</span></li>').click(function(){
+  $('#users').append($('<li class="userList"><span class="img">' + profilePicture + "   " + '</span>' + '<span class="userName">' + usernameV + '</span></li>').click(function(){
     var innername = ($( this.innerHTML).text().replace(/\s/g, ""));
     if($(this).css("background-color") != 'rgb(128, 128, 128)' && innername != myname){
       
@@ -341,6 +334,7 @@ $("b").click(function() {
         var img = document.createElement('img');
         img.height = 100;
         img.width = 100;
+        img.style.borderRadius = '100%';
         img.src= content;
         var pic = document.getElementById('loginpic2')
         pic.append(img);
