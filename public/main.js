@@ -261,6 +261,19 @@ $(function () {
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
     var picture = document.getElementById('loginpic2').innerHTML;
+    console.log(picture.length);
+    if(picture.length == 57){
+      console.log("ohne bild");
+      picture = document.getElementById('loginpic2');
+      var img = document.createElement('img');
+      img.height = 100;
+      img.width = 100;
+      img.style.borderRadius = '100%';
+      img.src= 'placerholder.jpg';
+      console.log("test" + img.innerHTML);
+      picture.append(img);
+    }
+    picture = document.getElementById('loginpic2').innerHTML;
     if(username != 'undefined'){
     socket.emit('username', {username: username, password: password, color: color, loginpage : elementId, picture: picture});
     }
