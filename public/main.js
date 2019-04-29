@@ -345,7 +345,14 @@ $("b").click(function() {
         img.style.borderRadius = '100%';
         img.src= content;
         var pic = document.getElementById('loginpic2')
+        console.log(pic.childNodes.length);
+        if(pic.childNodes.length == 3){
         pic.append(img);
+      }
+      else{
+        pic.removeChild(pic.lastChild);
+        pic.append(img);
+      }
         $('#typeforminput').val('');
      }
     }
