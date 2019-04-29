@@ -95,7 +95,7 @@ io.on('connection', function(socket){
     socket.on('disconnect', function(){
         var index = usernames.indexOf(socket.username);
         if(index !== -1) { usernames.splice(index, 1)}
-        io.emit('user dcon', {username: socket.username, usernames: usernames });
+        io.emit('user dcon', {username: socket.username, usernames: usernames, pictures: pictures });
     });
 
 
