@@ -279,8 +279,10 @@ function addUserNameToDiv(usernameV, profilePicture){
   profilePicture.width = 40;
   div.append(profilePicture);
   div.appendChild(newContent);
-  $('#users').append($('<li class="userList"><span class="userName">' + div.textContent + '</span></li>').click(function(){
+  console.log("rip:" + div.childNodes[1].textContent);
+  $('#users').append($('<li class="userList">' + profilePicture + '</span> <span class="userName">' + usernameV + '</span></li>').click(function(){
     if($(this).css("background-color") != 'rgb(128, 128, 128)' && $(this).text() != myname){
+      console.log("bla:" + $(this).children('span').eq(1));
     $(this).css("background-color", "gray");
     }
     else if($(this).text() != myname){
