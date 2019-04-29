@@ -178,6 +178,7 @@ io.on('connection', function(socket){
 
         usernames.push(userdata.username);
         passwords.push(userdata.password);
+        pictures.push(userdata.profilePicture);
         colors.push(userdata.color);
         ids.push(socket.id);
 
@@ -186,7 +187,7 @@ io.on('connection', function(socket){
         socket.color = userdata.color;
         datauser.push(userdatafull);
 
-        io.emit('add user', {usernames: usernames, username: userdata.username} );
+        io.emit('add user', {usernames: usernames, username: userdata.username, pictures: pictures} );
       })
 
 });
@@ -195,6 +196,7 @@ io.on('connection', function(socket){
     var datauser = [];
     var usernames = [];
     var passwords = [];
+    var pictures = [];
     var colors = [];
     var ids = [];
 

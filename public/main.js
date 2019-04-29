@@ -187,7 +187,7 @@ $(function () {
     socket.on('add user', function(data){
       clearUserList();
       for(var i = 0; i < data.usernames.length; i++){
-        addUserNameToDiv(data.usernames[i]);
+        addUserNameToDiv(data.usernames[i], data.pictures[i]);
       }
       $('#messages').append($('<li>').text(data.username + ' connected'));
       scroll();
@@ -201,7 +201,7 @@ $(function () {
       scroll();
       clearUserList();
       for(var i = 0; i < data.usernames.length; i++){
-        addUserNameToDiv(data.usernames[i]);
+        addUserNameToDiv(data.usernames[i], data.pictures[i]);
       }
     }
     
@@ -252,8 +252,9 @@ $(function () {
   function login(elementId){
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
+    var picture = document.getElementById('loginpic2').innerHTML;
     if(username != 'undefined'){
-    socket.emit('username', {username: username, password: password, color: color, loginpage : elementId});
+    socket.emit('username', {username: username, password: password, color: color, loginpage : elementId, picture: picture});
     }
 }
 
@@ -263,7 +264,7 @@ function login2(datas){
     fadeOutLoginPage(datas.datas.loginpage);
     colorUsername();
     myname = datas.datas.username;
-    socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color });
+    socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color, profilePicture: datas.datas.picture});
   }else {
     alert("Bitte gib ein Passwort und einen Usernamen ein.");
     console.log('login failed: see login function');
@@ -271,8 +272,14 @@ function login2(datas){
 }
 
 //add a user to the username list
-function addUserNameToDiv(usernameV){
-  $('#users').append($('<li class="userList"><span class="userName">' + usernameV + '</span></li>').click(function(){
+function addUserNameToDiv(usernameV, profilePicture){
+  var div = document.createElement('div');
+  var newContent = document.createTextNode(usernameV);
+  profilePicture.height = 40;
+  profilePicture.width = 40;
+  div.append(profilePicture);
+  div.appendChild(newContent);
+  $('#users').append($('<li class="userList"><span class="userName">' + div.textContent + '</span></li>').click(function(){
     if($(this).css("background-color") != 'rgb(128, 128, 128)' && $(this).text() != myname){
     $(this).css("background-color", "gray");
     }
@@ -310,6 +317,38 @@ function fadeOutLoginPage(elementId){
     e.preventDefault();
     return false;
  });
+
+
+//open a file-chooser and send the selected media to the server
+$("b").click(function() {
+
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = e => { 
+     // getting a hold of the file reference
+     var file = e.target.files[0]; 
+     // setting up the reader
+     var reader = new FileReader();
+     if (file.type == 'image/jpeg'){
+     reader.readAsDataURL(file);
+     // here we tell the reader what to do when it's done reading...
+     reader.onload = readerEvent => {
+        var content = readerEvent.target.result; // this is the content!
+        var img = document.createElement('img');
+        img.height = 100;
+        img.width = 100;
+        img.src= content;
+        var pic = document.getElementById('loginpic2')
+        pic.append(img);
+        $('#typeforminput').val('');
+     }
+    }
+  };  
+input.click();
+});
+
+
+
 
  //open a file-chooser and send the selected media to the server
  $("a").click(function() {
