@@ -250,6 +250,14 @@ $(function () {
   /* send the username to the server, the server ckeck now it the name free */
 
   function login(elementId){
+    var enableSubmit = function(ele) {
+      $(ele).removeAttr("disabled");
+  }
+    $("#loginreg").click(function() {
+      var that = this;
+      $(this).attr("disabled", true);
+      setTimeout(function() { enableSubmit(that) }, 3000);
+  });
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
     var picture = document.getElementById('loginpic2').innerHTML;
@@ -337,7 +345,14 @@ $("b").click(function() {
         img.style.borderRadius = '100%';
         img.src= content;
         var pic = document.getElementById('loginpic2')
+        console.log(pic.childNodes.length);
+        if(pic.childNodes.length == 3){
         pic.append(img);
+      }
+      else{
+        pic.removeChild(pic.lastChild);
+        pic.append(img);
+      }
         $('#typeforminput').val('');
      }
     }
