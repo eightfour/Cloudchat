@@ -94,7 +94,11 @@ io.on('connection', function(socket){
     //send messages if a user disconneted
     socket.on('disconnect', function(){
         var index = usernames.indexOf(socket.username);
-        if(index !== -1) { usernames.splice(index, 1)}
+        if(index !== -1) { 
+            usernames.splice(index, 1);
+            pictures.splice(index, 1);
+
+        }
         io.emit('user dcon', {username: socket.username, usernames: usernames, pictures: pictures });
     });
 
