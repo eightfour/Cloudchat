@@ -308,7 +308,7 @@ $(function () {
   }    
 }
   });
-  getRequest.open("GET", "http://localhost:3000/api/user/"+username);
+  getRequest.open("GET", "https://mystifying-rosalind.eu-de.mybluemix.net:3000/api/user/"+username);
   getRequest.send();
 }
 
@@ -323,7 +323,7 @@ function login2(datas){
     
     if(!eingeloggt){
     var http = new XMLHttpRequest();
-    http.open("POST", "http://localhost:3000/api/user", true);
+    http.open("POST", "https://mystifying-rosalind.eu-de.mybluemix.net:3000/api/user", true);
     var bla = datas.datas.picture.replace(/["]+/g, "$$$$$");
     var json = '{"username":"'+ datas.datas.username +'","password":"'+datas.datas.password+'","profilePicture":"'+ bla +'"}';
     var parsed = JSON.stringify(json);
