@@ -262,8 +262,9 @@ $(function () {
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
     var picture = document.getElementById('loginpic2').innerHTML;
+    console.log(picture);
     console.log(picture.length);
-    if(picture.length == 57){
+    if(picture.length == 0){
       console.log("ohne bild");
       picture = document.getElementById('loginpic2');
       var img = document.createElement('img');
@@ -271,9 +272,6 @@ $(function () {
       img.width = 100;
       img.style.borderRadius = '100%';
       img.src= 'placerholder.jpg';
-
-
-
       console.log("test" + img.innerHTML);
       picture.append(img);
     }
@@ -295,14 +293,20 @@ function login2(datas){
 
     var http = new XMLHttpRequest();
     http.open("POST", "http://localhost:3000/api/user", true);
-    //console.log(datas.datas.picture.src);
-    var json = '{"username":"'+ datas.datas.username +'","password":"'+datas.datas.password+'","profilePicture":"'+ datas.datas.picture.src+'"}';
+    console.log("-------------");
+    console.log(typeof datas.datas.picture);
+    console.log("-------------");
+    var bla = datas.datas.picture.replace(/["]+/g, "%%%%%");
+    console.log(bla);
+    var json = '{"username":"'+ datas.datas.username +'","password":"'+datas.datas.password+'","profilePicture":"'+ bla +'"}';
     var parsed = JSON.stringify(json);
 
-    console.log(json);
+    //console.log(json);
     // Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json;charset=UTF-8");
     var obj = JSON.parse(parsed);
+    console.log(obj);
+
     http.send(obj);
     http.onreadystatechange = function() {//Call a function when the state changes.
       if(http.readyState == 4 && http.status == 200) {
@@ -384,7 +388,7 @@ $("b").click(function() {
         img.src= content;
         var pic = document.getElementById('loginpic2')
         console.log(pic.childNodes.length);
-        if(pic.childNodes.length == 3){
+        if(pic.childNodes.length == 0){
         pic.append(img);
       }
       else{
