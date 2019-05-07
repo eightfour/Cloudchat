@@ -15,13 +15,13 @@ router.get('/users', function(req, res,next){
 });
 
 //get user by id
-router.get('/users/:id', function(req, res,next){
+router.get('/user/:username', function(req, res,next){
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET');
 
-  user.findOne({_id: req.params.id}).then(function(user){
+  user.findOne({username: req.params.username}).then(function(user){
      res.send(user);
    }).catch(next);
 });
