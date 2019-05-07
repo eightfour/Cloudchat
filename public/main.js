@@ -5,6 +5,7 @@ var socket = io();
 var user = false;
 var privates = [];
 var myname;
+var eingeloggt = false;
 
 
 
@@ -250,6 +251,7 @@ $(function () {
   /* send the username to the server, the server ckeck now it the name free */
 
   function login(elementId){
+
     var enableSubmit = function(ele) {
       $(ele).removeAttr("disabled");
   }
@@ -260,23 +262,54 @@ $(function () {
   });
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
-    var picture = document.getElementById('loginpic2').innerHTML;
-    console.log(picture.length);
-    if(picture.length == 57){
-      console.log("ohne bild");
-      picture = document.getElementById('loginpic2');
-      var img = document.createElement('img');
-      img.height = 100;
-      img.width = 100;
-      img.style.borderRadius = '100%';
-      img.src= 'placerholder.jpg';
-      console.log("test" + img.innerHTML);
-      picture.append(img);
+    var picture = document.getElementById('loginpic2').innerHTML
+
+
+    var getRequest = new XMLHttpRequest();
+  getRequest.addEventListener("load", () => {
+    console.log(getRequest.responseText.length)
+    var parsedData;
+    if(getRequest.responseText.length !=0){
+    parsedData = JSON.parse(getRequest.responseText);
+    
+    if (getRequest.readyState != 4 && getRequest.status != "200") {
+      console.error(parsedData);
+      return;
     }
-    picture = document.getElementById('loginpic2').innerHTML;
-    if(username != 'undefined'){
-    socket.emit('username', {username: username, password: password, color: color, loginpage : elementId, picture: picture});
+    console.log(typeof parsedData.username);
+    console.log(typeof username);
+
+
+    if(parsedData.username == username && parsedData.password == password){
+      console.log(parsedData);
+      var picturee = parsedData.profilePicture.replace(/[$$$$$]+/g, '"');
+      console.log(picturee);
+      socket.emit('username', {username: parsedData.username, password: parsedData.password, color: color, loginpage : elementId, picture: picturee});
+      console.log("einloggen");
+      eingeloggt = true;
     }
+    else {
+      alert("Passwort falsch");
+    }
+  }
+  else{
+  if(picture.length == 0){
+    picture = document.getElementById('loginpic2');
+    var img = document.createElement('img');
+    img.height = 100;
+    img.width = 100;
+    img.style.borderRadius = '100%';
+    img.src= 'placerholder.jpg';
+    picture.append(img);
+  }
+  picture = document.getElementById('loginpic2').innerHTML;
+  if(username != 'undefined'){
+  socket.emit('username', {username: username, password: password, color: color, loginpage : elementId, picture: picture});
+  }    
+}
+  });
+  getRequest.open("GET", "http://localhost:3000/api/user/"+username);
+  getRequest.send();
 }
 
 // handle the login
@@ -286,9 +319,29 @@ function login2(datas){
     colorUsername();
     myname = datas.datas.username;
     socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color, profilePicture: datas.datas.picture});
+
+    
+    if(!eingeloggt){
+    var http = new XMLHttpRequest();
+    http.open("POST", "http://localhost:3000/api/user", true);
+    var bla = datas.datas.picture.replace(/["]+/g, "$$$$$");
+    var json = '{"username":"'+ datas.datas.username +'","password":"'+datas.datas.password+'","profilePicture":"'+ bla +'"}';
+    var parsed = JSON.stringify(json);
+
+    // Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    var obj = JSON.parse(parsed);
+
+    http.send(obj);
+    http.onreadystatechange = function() {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+      alert(http.responseText);
+      }
+    }
+  }
+
   }else {
     alert("Bitte gib ein Passwort und einen Usernamen ein.");
-    console.log('login failed: see login function');
   }
 }
 
@@ -358,8 +411,7 @@ $("b").click(function() {
         img.style.borderRadius = '100%';
         img.src= content;
         var pic = document.getElementById('loginpic2')
-        console.log(pic.childNodes.length);
-        if(pic.childNodes.length == 3){
+        if(pic.childNodes.length == 0){
         pic.append(img);
       }
       else{
