@@ -8,6 +8,7 @@ var myname;
 
 
 
+
 /* wrap functionality */
 
 $(function () {
@@ -270,6 +271,9 @@ $(function () {
       img.width = 100;
       img.style.borderRadius = '100%';
       img.src= 'placerholder.jpg';
+
+
+
       console.log("test" + img.innerHTML);
       picture.append(img);
     }
@@ -286,6 +290,27 @@ function login2(datas){
     colorUsername();
     myname = datas.datas.username;
     socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color, profilePicture: datas.datas.picture});
+
+    
+
+    var http = new XMLHttpRequest();
+    http.open("POST", "http://localhost:3000/api/user", true);
+    //console.log(datas.datas.picture.src);
+    var json = '{"username":"'+ datas.datas.username +'","password":"'+datas.datas.password+'","profilePicture":"'+ datas.datas.picture.src+'"}';
+    var parsed = JSON.stringify(json);
+
+    console.log(json);
+    // Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    var obj = JSON.parse(parsed);
+    http.send(obj);
+    http.onreadystatechange = function() {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+      alert(http.responseText);
+      }
+    }
+
+
   }else {
     alert("Bitte gib ein Passwort und einen Usernamen ein.");
     console.log('login failed: see login function');

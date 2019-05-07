@@ -3,6 +3,27 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+//connect to mongodb
+mongoose.connect('mongodb://holmma:1q2w3e@ds125241.mlab.com:25241/artist_projekt_vs', { useNewUrlParser: true });
+mongoose.Promise = global.Promise;
+
+app.use(bodyParser.json());
+
+//inizialisiert routes
+app.use('/api',require('./routes/api'));
+
+//error handling middleware
+app.use(function(err, req,res,next){
+  //console.log(err);
+  res.status(422).send({error: err.message});
+});
+
+
+
+
 let port = process.env.PORT || 3000;
 const fetch = require('node-fetch');
 
@@ -179,7 +200,6 @@ io.on('connection', function(socket){
     });
     //handle a connection from a new user
     socket.on('user con', function (userdata){
-
         usernames.push(userdata.username);
         passwords.push(userdata.password);
         pictures.push(userdata.profilePicture);
