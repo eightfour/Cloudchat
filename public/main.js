@@ -8,7 +8,6 @@ var myname;
 var eingeloggt = false;
 
 
-
 /* wrap functionality */
 
 $(function () {
@@ -24,7 +23,7 @@ $(function () {
       }
     }
       if($('#typeforminput').val()){
-        socket.emit('chat message', {msg: $('#typeforminput').val(), receiver: privates});
+        socket.emit('chat message', {msg: $('#typeforminput').val(), receiver: privates, language: socket.language});
         $('#typeforminput').val('');
       }
       privates = [];
@@ -45,6 +44,13 @@ $(function () {
     })
     /* global message */
     socket.on('chat message2', function(data){
+      if(socket.language == 'de'){
+        data.media.msg = data.msgdev
+      }else if(socket.language == 'en'){
+        data.media.msg = data.msgenv;
+      }
+      console.log('data.media.msgdev');
+      console.log(data.msgdev);
       var timeStamp = actualDate();
       if(data.media.hasOwnProperty('mp3')){
         
@@ -55,6 +61,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(audio);
+       
         $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
 
       }
@@ -82,6 +89,7 @@ $(function () {
         $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else{
+        
         $('#messages').append($('<li><span class="userName">' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
@@ -93,6 +101,13 @@ $(function () {
 
      //private msg who resive ist
     socket.on('chat message3', function(data){
+      console.log('here data');
+      console.log(data);
+      if(socket.language == 'de'){
+        data.media.msg = data.msgdev
+      }else if(socket.language == 'en'){
+        data.media.msg = data.msgenv;
+      }
       var timeStamp = actualDate();
       if(data.media.hasOwnProperty('mp3')){
         
@@ -103,7 +118,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName" > Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(audio);
-        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('mp4')){
         var mp4 = document.createElement('video');
@@ -115,7 +130,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(mp4);
-        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('img')){
         var img = document.createElement('img');
@@ -126,12 +141,12 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
-        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else{
         $('#messages').append($('<li><span class="userName"> Private from: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
-        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       scroll();
      });
@@ -139,6 +154,11 @@ $(function () {
 
      //private messages who send it
      socket.on('chat message4', function(data){
+      if(socket.language == 'de'){
+        data.media.msg = data.msgdev
+      }else if(socket.language == 'en'){
+        data.media.msg = data.msgenv;
+      }
       var timeStamp = actualDate();
       if(data.media.hasOwnProperty('mp3')){
         
@@ -149,7 +169,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(audio);
-        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('mp4')){
         var mp4 = document.createElement('video');
@@ -161,7 +181,7 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(mp4);
-        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else if(data.media.hasOwnProperty('img')){
         var img = document.createElement('img');
@@ -172,12 +192,12 @@ $(function () {
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
         $('#messages').append(img);
-        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       else{
         $('#messages').append($('<li><span class="userName"> Private to: ' + data.username +'</span><span class="timeStamp"> at ' + timeStamp +'</span></li>'));
         $('.userName').css('color', data.color);
-        $('#messages').append($('<li>').text(data.message).css('color', data.textcolor));
+        $('#messages').append($('<li>').text(data.media.msg).css('color', data.textcolor));
       }
       scroll();
      });
@@ -318,7 +338,7 @@ function login2(datas){
     fadeOutLoginPage(datas.datas.loginpage);
     colorUsername();
     myname = datas.datas.username;
-    socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color, profilePicture: datas.datas.picture});
+    socket.emit('user con', { username: datas.datas.username, password: datas.datas.password, color: datas.datas.color, profilePicture: datas.datas.picture, language: socket.language});
 
     
     if(!eingeloggt){
@@ -331,7 +351,6 @@ function login2(datas){
     // Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json;charset=UTF-8");
     var obj = JSON.parse(parsed);
-
     http.send(obj);
     http.onreadystatechange = function() {//Call a function when the state changes.
       if(http.readyState == 4 && http.status == 200) {
@@ -429,7 +448,7 @@ input.click();
 
 
  //open a file-chooser and send the selected media to the server
- $("a").click(function() {
+ $("c").click(function() {
   var t = document.getElementById('users').childNodes;
   for(i=0; i<t.length; i++){
     if(t[i].style.backgroundColor == 'gray'){
@@ -478,3 +497,17 @@ input.click();
 }  
 input.click();
 });
+
+/* Language selection */
+var language = 'de';
+function selectLanguage(languageString){
+  console.log("languageString");
+  console.log(languageString)
+    if(languageString != null){
+        language = languageString;
+    }else{
+        console.alert('languagestring is null');
+    }
+   socket.language = language;
+}
+
