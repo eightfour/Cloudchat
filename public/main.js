@@ -38,7 +38,8 @@ $(function () {
       }
       else{
         alert("Username vergeben.");
-        $("#loginreg").attr('disabled', false);
+        $("#loginreg").attr("disabled", false);
+
       }
 
     })
@@ -275,11 +276,8 @@ $(function () {
     var enableSubmit = function(ele) {
       $(ele).removeAttr("disabled");
   }
-    $("#loginreg").click(function() {
-      var that = this;
-      $(this).attr("disabled", true);
+    $("#loginreg").attr("disabled", true);
 
-  });
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
     var picture = document.getElementById('loginpic2').innerHTML
