@@ -6,6 +6,10 @@ var http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const frameguard = require('frameguard')
+
+// Don't allow me to be in ANY frames:
+app.use(frameguard({ action: 'deny' }))
 app.use(helmet.noSniff());
 
 //connect to mongodb
