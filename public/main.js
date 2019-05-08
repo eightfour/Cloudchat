@@ -38,7 +38,7 @@ $(function () {
       }
       else{
         alert("Username vergeben.");
-
+        $("#loginreg").attr('disabled', false);
       }
 
     })
@@ -278,7 +278,7 @@ $(function () {
     $("#loginreg").click(function() {
       var that = this;
       $(this).attr("disabled", true);
-      setTimeout(function() { enableSubmit(that) }, 7000);
+
   });
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
