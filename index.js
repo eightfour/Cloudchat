@@ -148,11 +148,11 @@ var msgen = '';
 
 function translate(data, messageLanguage){
     datamessage = data.msg;
+    console.log("marv"+datamessage);
     var translatedMessage1 = '';
     var translatedMessage2 = '';
     var model = messageLanguage + '-' + globalLanguage;
-    console.log(messageLanguage);
-    console.log(globalLanguage);
+
 
    /* if(messageLanguage == globalLanguage){
         translatedMessage = message;
@@ -217,12 +217,16 @@ doMessage2(data, msgde, msgen);
 
 
     function doMessage(data){
-        translate(data, globalLanguage);
+        if(data.msg.length != 0){
+            translate(data, globalLanguage);
+        }
+        else{
+            doMessage2(data, "","");
+        }
     }
     function doMessage2(data, msgde, msgen ){
        
-        console.log('here the message');
-        console.log(data);
+        //console.log(data);
        // translate(data.msg, globalLanguage);
         fetch("https://wizardly-swartz.eu-de.mybluemix.net/tone", {
             method: "POST",
@@ -300,6 +304,7 @@ doMessage2(data, msgde, msgen);
     global messages, private messages and group messages
     can handle media files*/
     socket.on('chat message', function(data){
+        console.log(data);
         doMessage(data);
        /* doMessage(data);
         console.log('here the message');
