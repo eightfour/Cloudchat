@@ -5,6 +5,8 @@ var app = express();
 var http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+app.use(helmet.noSniff());
 
 //connect to mongodb
 mongoose.connect('mongodb://holmma:1q2w3e@ds125241.mlab.com:25241/artist_projekt_vs', { useNewUrlParser: true });
