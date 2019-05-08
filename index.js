@@ -23,6 +23,8 @@ app.use(function(err, req,res,next){
 
 
 
+    
+
 
 let port = process.env.PORT || 3000;
 const fetch = require('node-fetch');
@@ -57,7 +59,7 @@ var service = '/auth/tokens';
 
 var request = require('request');
 
-console.log(host + service);
+//console.log(host + service);
 
 var options = {
   uri: host + service,
@@ -71,12 +73,12 @@ var options = {
 
 request(options, function (error, response, body) {
   if (!error && response.statusCode == 200) {
-    console.log(body.id)
+    //console.log(body.id)
   }else{
       //console.log(error);
-      console.log('HERE BEGINNS THE RESPONSE \n');
-      console.log(response.statusCode);
-      console.log(body);
+     // console.log('HERE BEGINNS THE RESPONSE \n');
+      //console.log(response.statusCode);
+      //console.log(body);
   }
 });
 
@@ -123,11 +125,179 @@ io.on('connection', function(socket){
         io.emit('user dcon', {username: socket.username, usernames: usernames, pictures: pictures });
     });
 
+    //add IBM Language Translator
+
+const LanguageTranslatorV3 = require('watson-developer-cloud/language-translator/v3');
+
+const languageTranslator = new LanguageTranslatorV3({
+  version: '2018-05-01', //2019-04-02
+  iam_apikey: 'VPTaIKrsCtLvCMhd16zUxD8hEPAj-abl41pjOnppSfzN',
+  url: 'https://gateway-fra.watsonplatform.net/language-translator/api'
+});
+
+
+var globalLanguage;
+var msgde = '';
+var msgen = '';
+
+function translate(data, messageLanguage){
+    datamessage = data.msg;
+    var translatedMessage1 = '';
+    var translatedMessage2 = '';
+    var model = messageLanguage + '-' + globalLanguage;
+    console.log(messageLanguage);
+    console.log(globalLanguage);
+
+   /* if(messageLanguage == globalLanguage){
+        translatedMessage = message;
+    }else {
+        const translateParams = {
+            text: message,
+            model_id: model,
+            };
+            languageTranslator.translate(translateParams)
+            .then(translationResult => {
+        translatedMessage = translationResult;
+        console.log('here the translated message');
+        console.log(JSON.stringify(translationResult, null, 2));
+    })
+    .catch(err => {
+        console.log('error:', err);
+    });
+    } */
+    const translateParams1 = {
+        text: datamessage,
+        model_id: 'en-de',
+        };
+        const translateParams2 = {
+            text: datamessage,
+            model_id: 'de-en',
+            };
+        languageTranslator.translate(translateParams1)
+        .then(translationResult => {
+    translatedMessage1 = translationResult;
+    //console.log('here the translated message1');
+    //console.log(JSON.stringify(translationResult, null, 2));
+    languageTranslator.translate(translateParams2)
+    .then(translationResult => {
+translatedMessage2 = translationResult;
+//console.log('here the translated message2');
+//console.log('here the tm1');
+//console.log(translatedMessage1.translations[0].translation);
+msgde = translatedMessage1.translations[0].translation;
+//console.log(msgde);
+//console.log('here the tm2');
+//console.log(translatedMessage2.translations[0].translation);
+msgen = translatedMessage2.translations[0].translation;
+//console.log(msgen);
+//
+//console.log(data);
+doMessage2(data, msgde, msgen);
+
+//
+//console.log(JSON.stringify(translationResult, null, 2))
+;})
+//.catch(err => {
+  //  console.log('error:', err);
+//});
+
+})
+   // .catch(err => {
+       // console.log('error:', err);
+   // });
+
+    
+    }
+
+
+    function doMessage(data){
+        translate(data, globalLanguage);
+    }
+    function doMessage2(data, msgde, msgen ){
+       
+        console.log('here the message');
+        console.log(data);
+       // translate(data.msg, globalLanguage);
+        fetch("https://wizardly-swartz.eu-de.mybluemix.net/tone", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'mode': 'cors'
+            },
+            body: JSON.stringify({
+               texts: [data.msg]
+            })
+        })
+        .then((response) => {
+            var contentType = response.headers.get("content-type");
+            if(contentType && contentType.includes("application/json")) {
+                return response.json();
+            }
+            throw new TypeError("Oops, we haven't got JSON!");
+        })
+        .then((response) => { 
+           // console.log("response:" +  JSON.stringify(response));
+            //console.log(response.mood);
+            var textcolor;
+            if(response.mood == 'happy'){
+               // console.log("---happy");
+                textcolor = '#a1ff80';
+            }
+            else{
+               // console.log("---unhappy");
+
+                textcolor = '#ff80a1';
+            }
+    
+            /* private messages */  
+            if(data.receiver.length != 0){
+                var users = [];
+                //TODO check empty message
+                var id = [];
+                var coloru;
+                for(var i = 0; i < datauser.length; i++){
+                    for(var j =0; j < data.receiver.length; j++){
+                        if(datauser[i].username == data.receiver[j]){
+                            if(data.receiver[j] != socket.username){
+                                //console.log(data.receiver[j] + "receiver");
+                                //console.log(socket.username + "user");
+                                id.push(datauser[i].socketid);
+                            }
+                    }
+                    }
+                }
+                if(id != ''){
+                    for(var i =0; i<id.length;i++){
+                        io.to(id[i]).emit('chat message3', {username: socket.username, message: data.msg, color: coloru, media: data, textcolor: textcolor, language: data.language, msgdev: msgde, msgenv: msgen});
+                    }
+                    io.to(socket.id).emit('chat message4', {username: data.receiver, message: data.msg, color: coloru, media: data, textcolor: textcolor, language: data.language, msgdev: msgde, msgenv: msgen});
+
+                  
+                }else {
+                }
+    
+                /* group message */
+            }else {
+                io.emit('chat message2', {media: data, username: socket.username, color: socket.color, textcolor: textcolor, language: data.language, msgdev: msgde, msgenv: msgen});
+            }
+
+
+        })
+      
+        
+        
+    }
+
 
     /*handle a messages from a client
     global messages, private messages and group messages
     can handle media files*/
     socket.on('chat message', function(data){
+        doMessage(data);
+       /* doMessage(data);
+        console.log('here the message');
+        console.log(data.msg);
         fetch("https://wizardly-swartz.eu-de.mybluemix.net/tone", {
             method: "POST",
             headers: {
@@ -160,7 +330,7 @@ io.on('connection', function(socket){
                 textcolor = '#ff80a1';
             }
     
-            /* private messages */  
+            /* private messages */  /*
             if(data.receiver.length != 0){
                 var users = [];
                 //TODO check empty message
@@ -179,23 +349,23 @@ io.on('connection', function(socket){
                 }
                 if(id != ''){
                     for(var i =0; i<id.length;i++){
-                        io.to(id[i]).emit('chat message3', {username: socket.username, message: data.msg, color: coloru, media: data, textcolor: textcolor});
+                        io.to(id[i]).emit('chat message3', {username: socket.username, message: data.msg, color: coloru, media: data, textcolor: textcolor, language: data.language});
                     }
-                    io.to(socket.id).emit('chat message4', {username: data.receiver, message: data.msg, color: coloru, media: data, textcolor: textcolor});
+                    io.to(socket.id).emit('chat message4', {username: data.receiver, message: data.msg, color: coloru, media: data, textcolor: textcolor, language: data.language});
 
                   
                 }else {
                 }
     
-                /* group message */
+                /* group message */ /*
             }else {
-                io.emit('chat message2', {media: data, username: socket.username, color: socket.color, textcolor: textcolor});
+                io.emit('chat message2', {media: data, username: socket.username, color: socket.color, textcolor: textcolor, language: data.language});
             }
 
 
         })
       
-        
+        */
         
     });
     //handle a connection from a new user
@@ -205,7 +375,7 @@ io.on('connection', function(socket){
         pictures.push(userdata.profilePicture);
         colors.push(userdata.color);
         ids.push(socket.id);
-
+        globalLanguage = userdata.language;
         var userdatafull = JSON.parse(JSON.stringify(userdata).replace('}',' ') + ',"socketid":"' + socket.id + '"}');
         socket.username = userdata.username;
         socket.color = userdata.color;
