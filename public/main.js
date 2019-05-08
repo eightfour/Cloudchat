@@ -308,6 +308,7 @@ $(function () {
     }
     else {
       alert("Passwort falsch");
+      $("#loginreg").attr("disabled", false);
     }
   }
   else{
