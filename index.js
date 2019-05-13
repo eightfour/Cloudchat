@@ -12,6 +12,14 @@ const frameguard = require('frameguard')
 app.use(frameguard({ action: 'deny' }))
 app.use(helmet.noSniff());
 
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", 'maxcdn.bootstrapcdn.com'],
+      connectSrc:["'self", "wss://*.mystifying-rosalind.eu-de.mybluemix.net", "socket.io"]
+    }
+  }));
+
 //connect to mongodb
 mongoose.connect('mongodb://holmma:1q2w3e@ds125241.mlab.com:25241/artist_projekt_vs', { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
