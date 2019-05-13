@@ -17,6 +17,7 @@ app.use(helmet.contentSecurityPolicy({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", 'maxcdn.bootstrapcdn.com'],
       connectSrc:["'self", "wss://*.mystifying-rosalind.eu-de.mybluemix.net", "socket.io"]
+      scripSrc:["'self", "stackpath.bootstrapcdn.com", "cdnjs.cloudflare.com", "code.jquery.com"]
     }
   }));
 
