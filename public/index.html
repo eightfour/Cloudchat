@@ -14,6 +14,14 @@
 </head>
 
 <body scroll="no" style="overflow: hidden">
+  <script type="text/javascript">    
+     // Javascript URL redirection   
+     console.log(window.location.href.substring(0,5));
+     if(window.location.href.substring(0,5) != "https"){  
+     window.location.replace("https://mystifying-rosalind.eu-de.mybluemix.net/"); 
+    }
+     </script>
+
   <div id="loginpagediv">
     <form id="loginform" action="">
       <div id = "loginhandle">

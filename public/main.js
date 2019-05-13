@@ -38,6 +38,7 @@ $(function () {
       }
       else{
         alert("Username vergeben.");
+        $("#loginreg").attr("disabled", false);
 
       }
 
@@ -275,11 +276,8 @@ $(function () {
     var enableSubmit = function(ele) {
       $(ele).removeAttr("disabled");
   }
-    $("#loginreg").click(function() {
-      var that = this;
-      $(this).attr("disabled", true);
-      setTimeout(function() { enableSubmit(that) }, 7000);
-  });
+    $("#loginreg").attr("disabled", true);
+
     username = usernameInput.val().trim();
     password = passwordInput.val().trim();
     var picture = document.getElementById('loginpic2').innerHTML
@@ -310,6 +308,7 @@ $(function () {
     }
     else {
       alert("Passwort falsch");
+      $("#loginreg").attr("disabled", false);
     }
   }
   else{
@@ -328,7 +327,7 @@ $(function () {
   }    
 }
   });
-  getRequest.open("GET", "https://mystifying-rosalind.eu-de.mybluemix.net:3000/api/user/"+username);
+  getRequest.open("GET", "https://mystifying-rosalind.eu-de.mybluemix.net/api/user/"+username);
   getRequest.send();
 }
 
@@ -343,7 +342,7 @@ function login2(datas){
     
     if(!eingeloggt){
     var http = new XMLHttpRequest();
-    http.open("POST", "https://mystifying-rosalind.eu-de.mybluemix.net:3000/api/user", true);
+    http.open("POST", "https://mystifying-rosalind.eu-de.mybluemix.net/api/user", true);
     var bla = datas.datas.picture.replace(/["]+/g, "$$$$$");
     var json = '{"username":"'+ datas.datas.username +'","password":"'+datas.datas.password+'","profilePicture":"'+ bla +'"}';
     var parsed = JSON.stringify(json);
@@ -354,7 +353,7 @@ function login2(datas){
     http.send(obj);
     http.onreadystatechange = function() {//Call a function when the state changes.
       if(http.readyState == 4 && http.status == 200) {
-      alert(http.responseText);
+      //alert(http.responseText);
       }
     }
   }

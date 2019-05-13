@@ -11,6 +11,8 @@
     },
     "dependencies": {
         "express": "^4.16.4",
+        "frameguard": "^3.1.0",
+        "helmet": "^3.18.0",
         "mongoose": "^5.5.6",
         "node-fetch": "^2.3.0",
         "request": "^2.88.0",

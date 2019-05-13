@@ -5,6 +5,12 @@ var app = express();
 var http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const frameguard = require('frameguard')
+
+// Don't allow me to be in ANY frames:
+app.use(frameguard({ action: 'deny' }))
+app.use(helmet.noSniff());
 
 //connect to mongodb
 mongoose.connect('mongodb://holmma:1q2w3e@ds125241.mlab.com:25241/artist_projekt_vs', { useNewUrlParser: true });
@@ -142,11 +148,11 @@ var msgen = '';
 
 function translate(data, messageLanguage){
     datamessage = data.msg;
+    console.log("marv"+datamessage);
     var translatedMessage1 = '';
     var translatedMessage2 = '';
     var model = messageLanguage + '-' + globalLanguage;
-    console.log(messageLanguage);
-    console.log(globalLanguage);
+
 
    /* if(messageLanguage == globalLanguage){
         translatedMessage = message;
@@ -211,12 +217,16 @@ doMessage2(data, msgde, msgen);
 
 
     function doMessage(data){
-        translate(data, globalLanguage);
+        if(data.msg.length != 0){
+            translate(data, globalLanguage);
+        }
+        else{
+            doMessage2(data, "","");
+        }
     }
     function doMessage2(data, msgde, msgen ){
        
-        console.log('here the message');
-        console.log(data);
+        //console.log(data);
        // translate(data.msg, globalLanguage);
         fetch("https://wizardly-swartz.eu-de.mybluemix.net/tone", {
             method: "POST",
@@ -294,6 +304,7 @@ doMessage2(data, msgde, msgen);
     global messages, private messages and group messages
     can handle media files*/
     socket.on('chat message', function(data){
+        console.log(data);
         doMessage(data);
        /* doMessage(data);
         console.log('here the message');
