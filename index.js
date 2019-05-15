@@ -15,7 +15,7 @@ app.use(helmet.noSniff());
 app.use(helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      styleSrc: ["'self'", 'maxcdn.bootstrapcdn.com'],
+      styleSrc: ["'self'", 'maxcdn.bootstrapcdn.com', "stackpath.bootstrapcdn.com"],
       connectSrc:["'self", "wss://*.mystifying-rosalind.eu-de.mybluemix.net", "socket.io"],
       scriptSrc:["'self", "stackpath.bootstrapcdn.com", "cdnjs.cloudflare.com", "code.jquery.com"]
     }
