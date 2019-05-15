@@ -29,6 +29,8 @@ app.use(bodyParser.json());
 
 //inizialisiert routes
 app.use('/api', require('./routes/api'));
+let port = process.env.PORT || 3000;	
+const fetch = require('node-fetch');
 
 //error handling middleware
 app.use(function (err, req, res, next) {
@@ -231,5 +233,5 @@ var ids = [];
 /* http server listens to port 3000 */
 
 http.listen(port, function () {
-   //console.log('listening on *:3000');
+   console.log('listening on *:3000');
 });
