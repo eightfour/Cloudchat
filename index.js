@@ -17,7 +17,9 @@ app.use(helmet.contentSecurityPolicy({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       connectSrc:["'self'"], //"wss://*.mystifying-rosalind.eu-de.mybluemix.net", "socket.io"],
-      scriptSrc:["'self'", "'unsafe-inline'", "cdnjs.cloudflare.com", "code.jquery.com"]
+      scriptSrc:["'self'", "'unsafe-inline'", "cdnjs.cloudflare.com", "code.jquery.com"],
+      imgSrc: ["'self'"],
+      upgradeInsecureRequests: true
     }
   }));
 
