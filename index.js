@@ -14,8 +14,8 @@ app.use(helmet.noSniff());
 
 app.use(helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'"],
+      defaultSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
       connectSrc:["'self'"], //"wss://*.mystifying-rosalind.eu-de.mybluemix.net", "socket.io"],
       scriptSrc:["'self'", "'unsafe-inline'", "cdnjs.cloudflare.com", "code.jquery.com"]
     }
