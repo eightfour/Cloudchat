@@ -9,7 +9,7 @@ const helmet = require('helmet');
 
 /* setup helmet */
 
-app.use(helmet.contentSecurityPolicy({
+/*app.use(helmet.contentSecurityPolicy({
     directives: {
         defaultSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
@@ -18,7 +18,7 @@ app.use(helmet.contentSecurityPolicy({
         imgSrc: ["'self'", 'data:'],
         upgradeInsecureRequests: true
     }
-}));
+}));*/
 
 /* connect to mongodb */
 
